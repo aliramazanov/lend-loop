@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --color-background: var(--color-stone-50);
+  --color-foreground: var(--color-stone-900);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-stone-900);
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-stone-900);
+  --color-primary: var(--color-emerald-700);
+  --color-primary-hover: var(--color-emerald-800);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-stone-100);
+  --color-secondary-foreground: var(--color-stone-900);
+  --color-muted: var(--color-stone-100);
+  --color-muted-foreground: var(--color-stone-500);
+  --color-accent: var(--color-stone-100);
+  --color-accent-foreground: var(--color-stone-900);
+  --color-destructive: var(--color-rose-700);
+  --color-border: var(--color-stone-200);
+  --color-input: var(--color-stone-300);
+  --color-ring: var(--color-emerald-700);
+}
+
+:root {
+  --radius: 0.625rem;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+    outline-color: color-mix(in oklab, var(--color-ring) 50%, transparent);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  :focus-visible:not([data-slot]) {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}

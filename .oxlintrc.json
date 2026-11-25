@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "jsx-a11y", "nextjs", "import", "vitest"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": ["convex/_generated/**", ".next/**"],
+  "rules": {
+    "nextjs/no-img-element": "off",
+    "typescript/no-deprecated": "error",
+    "curly": ["error", "multi-line"]
+  }
+}

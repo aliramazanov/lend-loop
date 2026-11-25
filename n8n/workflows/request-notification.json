@@ -1,0 +1,247 @@
+{
+  "id": "lendloopReqNotif",
+  "name": "LendLoop - Request Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lendloop-request-event",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "req-webhook-1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ],
+      "webhookId": "lendloop-request-event"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst MS_PER_SECOND = 1000;\nconst REPLAY_WINDOW_SECONDS = 300;\nconst secret = $env.N8N_WEBHOOK_SECRET;\n\nif (!secret) {\n  throw new Error('N8N_WEBHOOK_SECRET is not set');\n}\n\nconst { headers = {}, body } = $input.first().json;\nconst payload = body?.payload;\nconst timestamp = headers['x-lendloop-timestamp'];\nconst signature = String(headers['x-lendloop-signature'] || '').replace(/^sha256=/, '');\nconst nowSeconds = Math.floor(Date.now() / MS_PER_SECOND);\nconst ageSeconds = Math.abs(nowSeconds - Number(timestamp));\n\nfunction isAuthentic() {\n  if (typeof payload !== 'string' || !timestamp || !signature) return false;\n\n  if (!Number.isFinite(ageSeconds) || ageSeconds > REPLAY_WINDOW_SECONDS) return false;\n\n  const expected = crypto\n    .createHmac('sha256', secret)\n    .update(`${timestamp}.${payload}`)\n    .digest('hex');\n\n  return (\n    expected.length === signature.length &&\n    crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))\n  );\n}\n\nif (!isAuthentic()) {\n  return [{ json: { valid: false } }];\n}\n\nconst event = JSON.parse(payload);\nconst delivered = $getWorkflowStaticData('global').deliveredEventIds || {};\n\nreturn [{ json: { valid: true, duplicate: Boolean(delivered[event.eventId]), event } }];\n"
+      },
+      "id": "req-verify-1",
+      "name": "Verify HMAC Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "notes": "A constant-time signature comparison and the duplicate-delivery store need Node's crypto module and workflow static data, which no native node offers."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "req-if-valid-cond",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "req-if-valid",
+      "name": "Signature Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "req-if-dup-cond",
+              "leftValue": "={{ $json.duplicate }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "req-if-dup",
+      "name": "Already Delivered?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        940,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const DEDUPE_WINDOW_MS = 24 * 60 * 60 * 1000;\nconst { event } = $input.first().json;\n\nconst notification = {\n  recipient: event.recipientName,\n  message: `[LendLoop] ${event.toolName} (${event.startDate} to ${event.endDate}) is now: ${event.status}`,\n  eventId: event.eventId,\n  dispatchedAt: new Date().toISOString(),\n};\n\nconsole.log('[LendLoop Notification]', JSON.stringify(notification));\n\nconst store = $getWorkflowStaticData('global');\nconst delivered = store.deliveredEventIds || {};\nconst cutoff = Date.now() - DEDUPE_WINDOW_MS;\n\nfor (const [eventId, deliveredAt] of Object.entries(delivered)) {\n  if (deliveredAt < cutoff) delete delivered[eventId];\n}\n\ndelivered[event.eventId] = Date.now();\nstore.deliveredEventIds = delivered;\n\nreturn [{ json: notification }];\n"
+      },
+      "id": "req-notify-1",
+      "name": "Send Notification (Mock)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        280
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "notes": "Records delivered event ids in workflow static data so a retried webhook is not sent twice."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "req-resp-ok",
+      "name": "Respond 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1420,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true, \"duplicate\": true } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "req-resp-dup",
+      "name": "Respond 200 (Duplicate)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1180,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"error\": \"Invalid signature\" } }}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "req-resp-401",
+      "name": "Respond 401",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Verify HMAC Signature",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify HMAC Signature": {
+      "main": [
+        [
+          {
+            "node": "Signature Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature Valid?": {
+      "main": [
+        [
+          {
+            "node": "Already Delivered?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 401",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already Delivered?": {
+      "main": [
+        [
+          {
+            "node": "Respond 200 (Duplicate)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Notification (Mock)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Notification (Mock)": {
+      "main": [
+        [
+          {
+            "node": "Respond 200",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "errorWorkflow": "lendloopErrHndlr"
+  }
+}

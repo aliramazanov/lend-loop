@@ -1,0 +1,183 @@
+{
+  "id": "lendloopSignCall",
+  "name": "LendLoop - Signed Convex Call",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "method"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "body"
+            }
+          ]
+        }
+      },
+      "id": "call-trigger",
+      "name": "When Called",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst MS_PER_SECOND = 1000;\nconst secret = $env.N8N_CALLBACK_SECRET;\nconst baseUrl = $env.CONVEX_SITE_URL;\n\nif (!secret || !baseUrl) {\n  throw new Error('N8N_CALLBACK_SECRET and CONVEX_SITE_URL must be set');\n}\n\nfunction sign(timestamp, payload) {\n  const digest = crypto\n    .createHmac('sha256', secret)\n    .update(`${timestamp}.${payload}`)\n    .digest('hex');\n\n  return `sha256=${digest}`;\n}\n\nreturn $input.all().map(({ json }) => {\n  const timestamp = String(Math.floor(Date.now() / MS_PER_SECOND));\n  const payload = json.method === 'GET' ? `GET:${json.path}` : json.body;\n\n  return {\n    json: {\n      ...json,\n      url: `${baseUrl}${json.path}`,\n      timestamp,\n      signature: sign(timestamp, payload),\n    },\n  };\n});\n"
+      },
+      "id": "call-sign",
+      "name": "Sign Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ],
+      "notes": "Signs with the shared callback secret from the environment, so the secret is never stored in a workflow or copied into a credential."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "call-is-get",
+              "leftValue": "={{ $json.method }}",
+              "rightValue": "GET",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "call-is-get",
+      "name": "Is GET?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-LendLoop-Timestamp",
+              "value": "={{ $json.timestamp }}"
+            },
+            {
+              "name": "X-LendLoop-Signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "call-get",
+      "name": "GET Convex",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-LendLoop-Timestamp",
+              "value": "={{ $json.timestamp }}"
+            },
+            {
+              "name": "X-LendLoop-Signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "options": {},
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.body }}"
+      },
+      "id": "call-post",
+      "name": "POST Convex",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "When Called": {
+      "main": [
+        [
+          {
+            "node": "Sign Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Request": {
+      "main": [
+        [
+          {
+            "node": "Is GET?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is GET?": {
+      "main": [
+        [
+          {
+            "node": "GET Convex",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "POST Convex",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

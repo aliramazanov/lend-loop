@@ -1,0 +1,60 @@
+import type { BadgeTone } from "@/components/ui/Badge";
+import type { LoanStatus } from "@convex/shared/catalog";
+import type { LoanView } from "./convexTypes";
+import { daysSince } from "./dates";
+
+export interface LoanStage {
+  tone: BadgeTone;
+  label: string;
+}
+
+type StageInput = Pick<
+  LoanView,
+  "status" | "hasStarted" | "isOverdue" | "returnCondition"
+>;
+
+const STATUS_STAGES: Record<LoanStatus, LoanStage> = {
+  pending: { tone: "warning", label: "Pending" },
+  approved: { tone: "info", label: "Upcoming" },
+  active: { tone: "success", label: "On loan" },
+  declined: { tone: "danger", label: "Declined" },
+  returned: { tone: "neutral", label: "Returned" },
+  cancelled: { tone: "quiet", label: "Cancelled" },
+  expired: { tone: "quiet", label: "Expired" },
+};
+
+export function statusLabel(status: LoanStatus): string {
+  return STATUS_STAGES[status].label;
+}
+
+export function loanStage(loan: StageInput): LoanStage {
+  if (loan.status === "approved" && loan.hasStarted) {
+    return { tone: "info", label: "Awaiting handover" };
+  }
+
+  if (loan.status === "active" && loan.isOverdue) {
+    return { tone: "danger", label: "Overdue" };
+  }
+
+  if (loan.status === "returned" && loan.returnCondition === "damaged") {
+    return { tone: "danger", label: "Returned damaged" };
+  }
+
+  if (loan.status === "returned" && loan.returnCondition === "missing") {
+    return { tone: "danger", label: "Not returned" };
+  }
+
+  return STATUS_STAGES[loan.status];
+}
+
+export function reminderNote(lastReminderAt: number | null): string | null {
+  if (!lastReminderAt) return null;
+
+  const days = daysSince(lastReminderAt);
+
+  if (days <= 0) return "Reminder sent today";
+
+  return days === 1
+    ? "Reminder sent 1 day ago"
+    : `Reminder sent ${days} days ago`;
+}

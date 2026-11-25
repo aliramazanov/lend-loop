@@ -1,0 +1,29 @@
+.rdp-root {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: var(--color-accent);
+  --rdp-day-height: 2.25rem;
+  --rdp-day-width: 2.25rem;
+  --rdp-day_button-height: 2.125rem;
+  --rdp-day_button-width: 2.125rem;
+  --rdp-day_button-border-radius: var(--radius-md);
+  --rdp-months-gap: 1.5rem;
+  --rdp-nav-height: 2.25rem;
+  --rdp-nav_button-height: 2.25rem;
+  --rdp-nav_button-width: 2.25rem;
+  font-size: var(--text-sm);
+}
+
+.rdp-caption_label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.rdp-weekday {
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+.booked-day .rdp-day_button {
+  background-color: var(--color-stone-200);
+  text-decoration: line-through;
+}
