@@ -1,9 +1,5 @@
 import { cn } from "@/lib/utils";
-
-interface LoadingStateProps {
-  label: string;
-  fullScreen?: boolean;
-}
+import type { LoadingStateProps } from "@/types";
 
 export function LoadingState({ label, fullScreen = false }: LoadingStateProps) {
   return (

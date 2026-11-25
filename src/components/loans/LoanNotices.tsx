@@ -1,14 +1,7 @@
-import type { ListedLoan, LoanView } from "@/lib/convexTypes";
 import { formatDay } from "@/lib/dates";
 import { BorrowerHistory } from "./BorrowerHistory";
 import { needsHandoverCheck } from "./HandoverCheck";
-
-type Perspective = "borrower" | "lender";
-
-interface LoanNoticesProps {
-  loan: ListedLoan;
-  perspective: Perspective;
-}
+import type { LoanNoticesProps, LoanView, Perspective } from "@/types";
 
 function extensionNotice(loan: LoanView, perspective: Perspective) {
   if (!loan.extensionEndDate) return null;

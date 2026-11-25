@@ -1,11 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
 import { Brand } from "./Brand";
-
-interface SiteHeaderProps {
-  children?: ReactNode;
-  navigation?: ReactNode;
-}
+import type { SiteHeaderProps } from "@/types";
 
 export function SiteHeader({ children, navigation }: SiteHeaderProps) {
   return (

@@ -1,5 +1,5 @@
-import type { CurrentUser } from "@/lib/convexTypes";
 import { createContext, useContext } from "react";
+import type { CurrentUser } from "@/types";
 
 export const CurrentUserContext = createContext<CurrentUser | null>(null);
 

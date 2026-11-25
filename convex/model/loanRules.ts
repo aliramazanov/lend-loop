@@ -1,15 +1,7 @@
 import { ConvexError } from "convex/values";
-import { Doc } from "../_generated/dataModel";
-import {
-  daysInclusive,
-  isIsoDate,
-  todayUtc,
-  type DateRange,
-} from "../lib/dates";
-import { LoanStatus } from "../shared/catalog";
+import { daysInclusive, isIsoDate, todayUtc } from "../lib/dates";
 import { LOAN_POLICY } from "../shared/policy";
-
-type Loan = Doc<"loans">;
+import type { DateRange, Loan, LoanStatus } from "../types";
 
 export function hasStarted(loan: Loan, today: string): boolean {
   return loan.startDate <= today;

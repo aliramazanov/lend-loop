@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { usePhotoDrafts, type PhotoDraft } from "@/hooks/usePhotoDrafts";
+import { usePhotoDrafts } from "@/hooks/usePhotoDrafts";
 import { parseChoice } from "@/lib/choices";
-import type { OwnListing } from "@/lib/convexTypes";
 import { ROUTES } from "@/lib/routes";
 import { withToast } from "@/lib/toast";
 import { api } from "@convex/_generated/api";
@@ -15,7 +14,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type SubmitEvent } from "react";
 import { PhotoPicker } from "./PhotoPicker";
-import { ToolFormFields, type ToolFormValues } from "./ToolFormFields";
+import { ToolFormFields } from "./ToolFormFields";
+import type {
+  OwnListing,
+  PhotoDraft,
+  ToolFormProps,
+  ToolFormValues,
+} from "@/types";
 
 const NEW_TOOL: ToolFormValues = {
   name: "",
@@ -52,7 +57,7 @@ function toPhotoDrafts(listing?: OwnListing): PhotoDraft[] {
   }));
 }
 
-export function ToolForm({ listing }: { listing?: OwnListing }) {
+export function ToolForm({ listing }: ToolFormProps) {
   const router = useRouter();
   const createTool = useMutation(api.tools.create);
   const updateTool = useMutation(api.tools.update);

@@ -1,5 +1,6 @@
 import { SIGNATURE_POLICY } from "./config";
 import { unixSeconds } from "./dates";
+import type { SignedMessage, VerificationResult } from "../types";
 
 const SIGNATURE_PREFIX = "sha256=";
 
@@ -8,15 +9,6 @@ const HEX_RADIX = 16;
 const HEX_DIGITS_PER_BYTE = 2;
 
 const encoder = new TextEncoder();
-
-export type VerificationResult = { ok: true } | { ok: false; reason: string };
-
-interface SignedMessage {
-  secret: string;
-  timestamp: string | null;
-  signature: string | null;
-  body: string;
-}
 
 function toHex(buffer: ArrayBuffer): string {
   return Array.from(new Uint8Array(buffer), (byte) =>

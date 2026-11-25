@@ -1,13 +1,6 @@
-import { Doc } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";
-
-type AuditEntry = Omit<
-  Doc<"auditEvents">,
-  "_id" | "_creationTime" | "createdAt"
->;
-
-type AuditEvent = Doc<"auditEvents">;
+import type { AuditEntry, AuditEvent } from "../types";
 
 export async function recordAudit(ctx: MutationCtx, entry: AuditEntry) {
   await ctx.db.insert("auditEvents", { ...entry, createdAt: Date.now() });

@@ -1,21 +1,12 @@
 import { ConvexError } from "convex/values";
-import { Doc, Id } from "../_generated/dataModel";
+import { Doc } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { enforceRateLimit } from "../lib/rateLimiter";
 import { requireLoanRole } from "./loanAccess";
 import { assertValidLoanDates, isOpen } from "./loanRules";
 import { assertDatesAreFree } from "./loanStore";
 import { declineCompetingRequests, notifyLoanChange } from "./loanTransitions";
-
-interface ExtensionRequest {
-  loanId: Id<"loans">;
-  endDate: string;
-}
-
-interface ExtensionAnswer {
-  loanId: Id<"loans">;
-  approve: boolean;
-}
+import type { ExtensionAnswer, ExtensionRequest } from "../types";
 
 function assertCanExtend(loan: Doc<"loans">, endDate: string) {
   if (loan.status !== "approved" && loan.status !== "active") {

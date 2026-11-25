@@ -1,9 +1,9 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { Slot } from "radix-ui";
-import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
+import type { ButtonProps } from "@/types";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   [
     "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap",
     "rounded-lg text-sm font-medium transition-colors",
@@ -36,9 +36,6 @@ const buttonVariants = cva(
     },
   },
 );
-
-type ButtonProps = ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & { asChild?: boolean };
 
 export function Button({
   className,

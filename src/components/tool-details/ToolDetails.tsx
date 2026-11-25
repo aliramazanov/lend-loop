@@ -13,8 +13,9 @@ import { AdminRemovePanel } from "./AdminRemovePanel";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { OwnerCard } from "./OwnerCard";
 import { ToolSummaryCard } from "./ToolSummaryCard";
+import type { ToolDetailsProps } from "@/types";
 
-export function ToolDetails({ toolId }: { toolId: string }) {
+export function ToolDetails({ toolId }: ToolDetailsProps) {
   const { role } = useCurrentUser();
   const tool = useQuery(api.tools.getDetails, { toolId });
 

@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/Card";
-import type { ToolDetailsView } from "@/lib/convexTypes";
 import { formatMonthYear } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { AVATAR } from "@/lib/config";
+import type { OwnerCardProps, OwnerStatProps } from "@/types";
 
 function initialsOf(name: string): string {
   return name
@@ -13,7 +13,7 @@ function initialsOf(name: string): string {
     .toUpperCase();
 }
 
-function OwnerStat({ label, value }: { label: string; value: string }) {
+function OwnerStat({ label, value }: OwnerStatProps) {
   return (
     <div className="rounded-xl bg-stone-50 px-2 py-2.5">
       <dd className="text-sm font-semibold whitespace-nowrap">{value}</dd>
@@ -22,7 +22,7 @@ function OwnerStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function OwnerCard({ tool }: { tool: ToolDetailsView }) {
+export function OwnerCard({ tool }: OwnerCardProps) {
   const ownerLabel = tool.isOwner ? `${tool.ownerName} (you)` : tool.ownerName;
 
   return (

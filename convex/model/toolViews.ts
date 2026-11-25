@@ -1,14 +1,10 @@
-import { Doc } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { isOnLoanToday } from "./loanRules";
 import { bookedLoansForTool, isToolOnLoan, loansAsLender } from "./loanStore";
 import { photoUrls, photosWithUrls } from "./toolPhotos";
 import { isArchived, isListed, listOwnedTools } from "./toolStore";
-
-type Tool = Doc<"tools">;
-
-type Viewer = Doc<"users">;
+import type { Tool, Viewer } from "../types";
 
 export function toPublicTool(tool: Tool) {
   return { _id: tool._id, name: tool.name, category: tool.category };

@@ -4,27 +4,13 @@ import {
   CATEGORIES,
   CONDITION_LABELS,
   CONDITIONS,
-  type Category,
-  type Condition,
 } from "@convex/shared/catalog";
 import { LISTING_POLICY } from "@convex/shared/policy";
 import { useEffect, useRef, useState } from "react";
 import { SelectField } from "./SelectField";
+import type { ToolFormFieldsProps } from "@/types";
 
 const { nameLength, descriptionLength } = LISTING_POLICY;
-
-export interface ToolFormValues {
-  name: string;
-  category: Category;
-  condition: Condition;
-  shortDescription: string;
-}
-
-interface ToolFormFieldsProps {
-  initial: ToolFormValues;
-  onNameChange: (name: string) => void;
-  onCategoryChange: (category: Category) => void;
-}
 
 export function ToolFormFields({
   initial,

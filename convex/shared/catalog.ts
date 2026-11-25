@@ -1,3 +1,5 @@
+import type { Condition, ReturnCondition } from "../types";
+
 export const CATEGORIES = [
   "power tools",
   "garden",
@@ -25,18 +27,6 @@ export const RETURN_CONDITIONS = ["as_expected", "damaged", "missing"] as const;
 export const ROLES = ["user", "admin"] as const;
 
 export const LOAN_PARTIES = ["lender", "borrower"] as const;
-
-export type Category = (typeof CATEGORIES)[number];
-
-export type Condition = (typeof CONDITIONS)[number];
-
-export type LoanStatus = (typeof LOAN_STATUSES)[number];
-
-export type ReturnCondition = (typeof RETURN_CONDITIONS)[number];
-
-export type Role = (typeof ROLES)[number];
-
-export type LoanParty = (typeof LOAN_PARTIES)[number];
 
 export const RETURN_CONDITION_LABELS: Record<ReturnCondition, string> = {
   as_expected: "As expected",

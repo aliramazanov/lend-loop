@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import { cva } from "class-variance-authority";
+import type { BadgeProps } from "@/types";
 
-const badgeVariants = cva(
+export const badgeVariants = cva(
   "inline-flex shrink-0 items-center text-xs font-medium whitespace-nowrap",
   {
     variants: {
@@ -26,12 +26,8 @@ const badgeVariants = cva(
   },
 );
 
-type BadgeProps = ComponentProps<"span"> & VariantProps<typeof badgeVariants>;
-
 function Badge({ className, tone, ...props }: BadgeProps) {
   return <span className={cn(badgeVariants({ tone }), className)} {...props} />;
 }
-
-export type BadgeTone = NonNullable<BadgeProps["tone"]>;
 
 export { Badge };

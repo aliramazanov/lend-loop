@@ -1,21 +1,4 @@
-import type { ReactNode } from "react";
-
-export interface ChartRow {
-  label: string;
-  value: number;
-}
-
-export interface ChartProps {
-  rows: ChartRow[];
-  valueLabel: string;
-}
-
-interface ChartCardProps {
-  title: string;
-  description: string;
-  rows: ChartRow[];
-  children: ReactNode;
-}
+import type { ChartCardProps } from "@/types";
 
 export function ChartCard({
   title,

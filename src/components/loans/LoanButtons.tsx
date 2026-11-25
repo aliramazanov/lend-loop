@@ -1,15 +1,8 @@
 import { api } from "@convex/_generated/api";
-import type { Id } from "@convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Check, X } from "lucide-react";
 import { ActionButton } from "@/components/shared/ActionButton";
-
-interface DecisionButtonsProps {
-  subject: "Request" | "Extension";
-  approveLabel: string;
-  approve: () => Promise<unknown>;
-  decline: () => Promise<unknown>;
-}
+import type { CancelLoanButtonProps, DecisionButtonsProps } from "@/types";
 
 export function DecisionButtons({
   subject,
@@ -41,13 +34,7 @@ export function DecisionButtons({
   );
 }
 
-export function CancelLoanButton({
-  loanId,
-  label,
-}: {
-  loanId: Id<"loans">;
-  label: string;
-}) {
+export function CancelLoanButton({ loanId, label }: CancelLoanButtonProps) {
   const cancel = useMutation(api.loans.cancel);
 
   return (

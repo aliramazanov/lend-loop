@@ -6,19 +6,11 @@ import {
   useCarousel,
 } from "@/components/ui/Carousel";
 import { cn } from "@/lib/utils";
-import type { Category } from "@convex/shared/catalog";
 import { CarouselThumbnails } from "./CarouselThumbnails";
 import { ToolPhoto } from "./ToolPhoto";
+import type { PhotoCarouselProps, SlideCounterProps } from "@/types";
 
-interface PhotoCarouselProps {
-  name: string;
-  category: Category;
-  photoUrls: string[];
-  showThumbnails?: boolean;
-  className?: string;
-}
-
-function SlideCounter({ total }: { total: number }) {
+function SlideCounter({ total }: SlideCounterProps) {
   const { selectedIndex } = useCarousel();
 
   return (

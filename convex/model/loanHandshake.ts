@@ -3,10 +3,10 @@ import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { enforceRateLimit } from "../lib/rateLimiter";
-import { LoanParty } from "../shared/catalog";
 import { recordAudit } from "./audit";
 import { assertLoanStatus, requireLoanParty } from "./loanAccess";
 import { transitionLoan } from "./loanTransitions";
+import type { LoanParty } from "../types";
 
 function otherParty(loan: Doc<"loans">, isBorrower: boolean): Id<"users"> {
   return isBorrower ? loan.lenderId : loan.borrowerId;

@@ -1,4 +1,3 @@
-import { Doc } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { idempotencyKeys } from "../lib/events";
@@ -6,8 +5,11 @@ import { recordAutomationEvent } from "./automation";
 import { scheduleLoanEmail } from "./emailScheduling";
 import { isOverdue } from "./loanRules";
 import { loansWithStatus } from "./loanStore";
-
-type Loan = Doc<"loans">;
+import type {
+  Loan,
+  RecordDueSoonReminderArgs,
+  RecordOverdueReminderArgs,
+} from "../types";
 
 function remindedOn(loan: Loan, today: string): boolean {
   return (
@@ -64,7 +66,7 @@ export async function listDueSoon(ctx: QueryCtx, tomorrow: string) {
 
 export async function recordOverdueReminder(
   ctx: MutationCtx,
-  { loanId, today }: { loanId: string; today: string },
+  { loanId, today }: RecordOverdueReminderArgs,
 ) {
   const loan = await findLoan(ctx, loanId);
 
@@ -93,7 +95,7 @@ export async function recordOverdueReminder(
 
 export async function recordDueSoonReminder(
   ctx: MutationCtx,
-  { loanId, tomorrow }: { loanId: string; tomorrow: string },
+  { loanId, tomorrow }: RecordDueSoonReminderArgs,
 ) {
   const loan = await findLoan(ctx, loanId);
 

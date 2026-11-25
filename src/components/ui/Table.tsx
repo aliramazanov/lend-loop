@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
+import type { EmptyTableRowProps, TableHeadingsProps } from "@/types";
 
 function Table({ className, ...props }: ComponentProps<"table">) {
   return (
@@ -52,13 +53,7 @@ function TableCell({ className, ...props }: ComponentProps<"td">) {
   );
 }
 
-function TableHeadings({
-  labels,
-  alignLastRight = false,
-}: {
-  labels: readonly string[];
-  alignLastRight?: boolean;
-}) {
+function TableHeadings({ labels, alignLastRight = false }: TableHeadingsProps) {
   const lastIndex = labels.length - 1;
 
   return (
@@ -79,7 +74,7 @@ function TableHeadings({
   );
 }
 
-function EmptyTableRow({ colSpan, text }: { colSpan: number; text: string }) {
+function EmptyTableRow({ colSpan, text }: EmptyTableRowProps) {
   return (
     <TableRow>
       <TableCell

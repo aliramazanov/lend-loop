@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
+import type { LabelProps } from "@/types";
 
 const controlClasses = cn(
   "w-full rounded-lg border border-input bg-card px-3 py-2 text-sm",
@@ -9,10 +10,6 @@ const controlClasses = cn(
 );
 
 const labelClasses = "mb-1 block text-xs font-medium text-stone-700";
-
-interface LabelProps extends ComponentProps<"label"> {
-  htmlFor: string;
-}
 
 function Label({ htmlFor, className, ...props }: LabelProps) {
   return (

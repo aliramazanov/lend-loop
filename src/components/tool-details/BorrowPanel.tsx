@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button";
-import type { ToolDetailsView } from "@/lib/convexTypes";
 import {
   daysInclusive,
   formatDay,
@@ -14,6 +13,7 @@ import { useState } from "react";
 import type { DateRange as PickedRange } from "react-day-picker";
 import { toast } from "sonner";
 import { AvailabilityCalendar } from "./AvailabilityCalendar";
+import type { BorrowPanelProps } from "@/types";
 
 function selectedDates(range: PickedRange | undefined) {
   const startDate = range?.from ? toIsoDate(range.from) : null;
@@ -22,7 +22,7 @@ function selectedDates(range: PickedRange | undefined) {
   return startDate && endDate ? { startDate, endDate } : null;
 }
 
-export function BorrowPanel({ tool }: { tool: ToolDetailsView }) {
+export function BorrowPanel({ tool }: BorrowPanelProps) {
   const requestBorrow = useMutation(api.loans.requestBorrow);
   const [range, setRange] = useState<PickedRange | undefined>();
   const [error, setError] = useState<string | null>(null);

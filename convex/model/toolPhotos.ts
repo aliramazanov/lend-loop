@@ -1,14 +1,12 @@
 import { ConvexError } from "convex/values";
-import { Id } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { PHOTO_POLICY } from "../shared/policy";
-
-type PhotoId = Id<"_storage">;
-
-export interface StoredPhoto {
-  id: PhotoId;
-  url: string;
-}
+import type {
+  DeleteDroppedPhotosArgs,
+  HasUrlArgs,
+  PhotoId,
+  StoredPhoto,
+} from "../types";
 
 async function isAcceptedPhoto(ctx: QueryCtx, photoId: PhotoId) {
   const file = await ctx.db.system.get("_storage", photoId);
@@ -21,10 +19,7 @@ async function isAcceptedPhoto(ctx: QueryCtx, photoId: PhotoId) {
   );
 }
 
-function hasUrl(photo: {
-  id: PhotoId;
-  url: string | null;
-}): photo is StoredPhoto {
+function hasUrl(photo: HasUrlArgs): photo is StoredPhoto {
   return photo.url !== null;
 }
 
@@ -69,7 +64,7 @@ export async function photoUrls(
 
 export async function deleteDroppedPhotos(
   ctx: MutationCtx,
-  { previous, kept }: { previous: PhotoId[]; kept: PhotoId[] },
+  { previous, kept }: DeleteDroppedPhotosArgs,
 ) {
   const keptIds = new Set(kept);
 

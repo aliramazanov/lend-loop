@@ -1,9 +1,13 @@
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
-import { datesOverlap, type DateRange } from "../lib/dates";
-import { LoanStatus } from "../shared/catalog";
+import { datesOverlap } from "../lib/dates";
 import { isOnLoanToday } from "./loanRules";
+import type {
+  AssertDatesAreFreeArgs,
+  AssertNoDuplicateRequestArgs,
+  LoanStatus,
+} from "../types";
 
 export async function loansForTool(
   ctx: QueryCtx,
@@ -58,15 +62,7 @@ export async function loansAsLender(ctx: QueryCtx, lenderId: Id<"users">) {
 
 export async function assertDatesAreFree(
   ctx: QueryCtx,
-  {
-    toolId,
-    range,
-    ignoredLoanId,
-  }: {
-    toolId: Id<"tools">;
-    range: DateRange;
-    ignoredLoanId?: Id<"loans">;
-  },
+  { toolId, range, ignoredLoanId }: AssertDatesAreFreeArgs,
 ) {
   const booked = await bookedLoansForTool(ctx, toolId);
 
@@ -81,15 +77,7 @@ export async function assertDatesAreFree(
 
 export async function assertNoDuplicateRequest(
   ctx: QueryCtx,
-  {
-    toolId,
-    range,
-    borrowerId,
-  }: {
-    toolId: Id<"tools">;
-    range: DateRange;
-    borrowerId: Id<"users">;
-  },
+  { toolId, range, borrowerId }: AssertNoDuplicateRequestArgs,
 ) {
   const pending = await loansForTool(ctx, toolId, "pending");
 

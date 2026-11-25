@@ -10,8 +10,7 @@ import {
   panelClasses,
   titleClasses,
 } from "./dialogStyles";
-
-type ButtonVariant = ComponentProps<typeof Button>["variant"];
+import type { ButtonVariant } from "@/types";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 

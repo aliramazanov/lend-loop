@@ -1,8 +1,7 @@
-import { Doc, Id } from "../_generated/dataModel";
+import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";
 import { todayUtc } from "../lib/dates";
-import { Category } from "../shared/catalog";
 import { isToolOnLoan } from "./loanStore";
 import {
   isArchived,
@@ -17,8 +16,7 @@ import {
   toRemovedListing,
   toToolDetails,
 } from "./toolViews";
-
-type Viewer = Doc<"users">;
+import type { Category, Viewer } from "../types";
 
 export async function publicBoard(ctx: QueryCtx) {
   const today = todayUtc();

@@ -1,14 +1,6 @@
 import { cn } from "@/lib/utils";
 import { AlertTriangle } from "lucide-react";
-
-type Tone = "neutral" | "warning" | "critical";
-
-interface StatTileProps {
-  label: string;
-  value: number | undefined;
-  hint: string;
-  tone?: Tone;
-}
+import type { StatTileProps, Tone } from "@/types";
 
 const ALERT_STYLES: Record<
   Exclude<Tone, "neutral">,

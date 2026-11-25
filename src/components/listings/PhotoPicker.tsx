@@ -1,18 +1,9 @@
 import { PhotoCarousel } from "@/components/tools/PhotoCarousel";
 import { Hint, labelClasses } from "@/components/ui/Field";
-import type { PhotoDraft } from "@/hooks/usePhotoDrafts";
 import { cn } from "@/lib/utils";
-import type { Category } from "@convex/shared/catalog";
 import { PHOTO_POLICY } from "@convex/shared/policy";
 import { ImagePlus, X } from "lucide-react";
-
-interface PhotoPickerProps {
-  toolName: string;
-  category: Category;
-  photos: PhotoDraft[];
-  onAdd: (files: FileList) => void;
-  onRemove: (key: string) => void;
-}
+import type { PhotoPickerProps } from "@/types";
 
 const addTileClasses = cn(
   "flex h-16 w-20 cursor-pointer flex-col items-center justify-center gap-0.5",

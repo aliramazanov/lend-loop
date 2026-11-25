@@ -1,21 +1,10 @@
 import { internal } from "../_generated/api";
-import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
-import { EmailKind } from "../lib/events";
+import type { ScheduleLoanEmailArgs } from "../types";
 
 export async function scheduleLoanEmail(
   ctx: MutationCtx,
-  {
-    emailId,
-    kind,
-    loan,
-    recipientId,
-  }: {
-    emailId: string;
-    kind: EmailKind;
-    loan: Doc<"loans">;
-    recipientId: Id<"users">;
-  },
+  { emailId, kind, loan, recipientId }: ScheduleLoanEmailArgs,
 ) {
   const tool = await ctx.db.get("tools", loan.toolId);
 

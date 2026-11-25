@@ -4,12 +4,12 @@ import { LoadingState } from "@/components/shared/LoadingState";
 import { useUserSync } from "@/hooks/useUserSync";
 import { api } from "@convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-import type { ReactNode } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { SessionEnded } from "./SessionEnded";
 import { SuspendedNotice } from "./SuspendedNotice";
+import type { AccountGateProps } from "@/types";
 
-export function AccountGate({ children }: { children: ReactNode }) {
+export function AccountGate({ children }: AccountGateProps) {
   const { isLoading, isAuthenticated } = useConvexAuth();
 
   useUserSync(isAuthenticated);

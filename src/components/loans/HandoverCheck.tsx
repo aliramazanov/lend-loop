@@ -1,11 +1,11 @@
 import { ActionButton } from "@/components/shared/ActionButton";
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
-import type { LoanView } from "@/lib/convexTypes";
 import { api } from "@convex/_generated/api";
-import type { LoanParty } from "@convex/shared/catalog";
 import { useMutation } from "convex/react";
 import { Check } from "lucide-react";
+import type { HandoverCheckProps, LoanView } from "@/types";
+import type { LoanParty } from "@convex/types";
 
 export function needsHandoverCheck(loan: LoanView, party: LoanParty) {
   return (
@@ -16,7 +16,7 @@ export function needsHandoverCheck(loan: LoanView, party: LoanParty) {
   );
 }
 
-export function HandoverCheck({ loan }: { loan: LoanView }) {
+export function HandoverCheck({ loan }: HandoverCheckProps) {
   const acknowledge = useMutation(api.loans.acknowledgeHandover);
   const dispute = useMutation(api.loans.disputeHandover);
   const loanId = loan._id;

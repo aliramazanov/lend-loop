@@ -1,13 +1,11 @@
 import { AccountGate } from "@/components/account/AccountGate";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { auth } from "@clerk/nextjs/server";
-import type { ReactNode } from "react";
+import type { SignedInLayoutProps } from "@/types";
 
 export default async function SignedInLayout({
   children,
-}: {
-  children: ReactNode;
-}) {
+}: SignedInLayoutProps) {
   await auth.protect();
 
   return (

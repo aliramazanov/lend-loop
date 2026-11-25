@@ -1,16 +1,16 @@
 "use client";
 
 import { categoryLabel } from "@/lib/categories";
-import type { AdminOverview } from "@/lib/convexTypes";
 import { formatDay } from "@/lib/dates";
 import { statusLabel } from "@/lib/loanStage";
 import { api } from "@convex/_generated/api";
 import { CATEGORIES, LOAN_STATUSES } from "@convex/shared/catalog";
 import { OVERVIEW_WINDOWS } from "@convex/shared/policy";
 import { useQuery } from "convex/react";
-import { ChartCard, type ChartRow } from "./charts/ChartCard";
+import { ChartCard } from "./charts/ChartCard";
 import { ColumnChart } from "./charts/ColumnChart";
 import { RankedBarChart } from "./charts/RankedBarChart";
+import type { AdminOverview, ChartRow } from "@/types";
 
 function requestRows(overview?: AdminOverview): ChartRow[] {
   return (overview?.requestsPerDay ?? []).map((day) => ({

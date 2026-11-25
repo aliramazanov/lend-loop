@@ -1,7 +1,7 @@
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
-import { todayUtc, type DateRange } from "../lib/dates";
+import { todayUtc } from "../lib/dates";
 import { forbidden } from "../lib/errors";
 import { enforceRateLimit } from "../lib/rateLimiter";
 import { requireUser } from "./auth";
@@ -18,8 +18,7 @@ import {
   transitionLoan,
 } from "./loanTransitions";
 import { getActiveToolOrThrow } from "./toolStore";
-
-type BorrowRequest = DateRange & { toolId: Id<"tools"> };
+import type { BorrowRequest } from "../types";
 
 export async function requestBorrow(
   ctx: MutationCtx,

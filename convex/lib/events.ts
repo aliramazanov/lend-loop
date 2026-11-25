@@ -1,3 +1,5 @@
+import type { LoanEvent } from "../types";
+
 export const LOAN_EVENTS = [
   "loan_requested",
   "loan_approved",
@@ -47,14 +49,6 @@ export const AUDIT_ACTIONS = [
   "user_reinstated",
   "account_deleted",
 ] as const;
-
-export type LoanEvent = (typeof LOAN_EVENTS)[number];
-
-export type AutomationEventType = (typeof AUTOMATION_EVENTS)[number];
-
-export type AuditAction = (typeof AUDIT_ACTIONS)[number];
-
-export type EmailKind = (typeof EMAIL_KINDS)[number];
 
 export function loanEventId(loanId: string, event: LoanEvent, at: number) {
   return `${loanId}:${event}:${at}`;

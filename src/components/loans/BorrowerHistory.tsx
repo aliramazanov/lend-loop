@@ -1,10 +1,9 @@
-import type { BorrowerHistory as History } from "@/lib/convexTypes";
 import { cn } from "@/lib/utils";
-
-interface HistoryFact {
-  text: string;
-  isWarning: boolean;
-}
+import type {
+  BorrowerHistory as History,
+  BorrowerHistoryProps,
+  HistoryFact,
+} from "@/types";
 
 function historyFacts(history: History): HistoryFact[] {
   const facts = [
@@ -23,7 +22,7 @@ function historyFacts(history: History): HistoryFact[] {
   return facts;
 }
 
-export function BorrowerHistory({ history }: { history: History }) {
+export function BorrowerHistory({ history }: BorrowerHistoryProps) {
   const isFirstLoan = history.completedLoans === 0 && history.overdueNow === 0;
 
   return (

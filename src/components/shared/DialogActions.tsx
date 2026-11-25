@@ -1,13 +1,6 @@
-import type { ComponentProps } from "react";
 import { Button } from "@/components/ui/Button";
 import { DialogClose, DialogFooter } from "@/components/ui/Dialog";
-
-interface DialogActionsProps {
-  confirmLabel: string;
-  confirmVariant?: ComponentProps<typeof Button>["variant"];
-  disabled?: boolean;
-  onConfirm: () => void;
-}
+import type { DialogActionsProps } from "@/types";
 
 export function DialogActions({
   confirmLabel,

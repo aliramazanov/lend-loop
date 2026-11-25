@@ -10,20 +10,13 @@ import {
 import { Label, Textarea } from "@/components/ui/Field";
 import { withToast } from "@/lib/toast";
 import { api } from "@convex/_generated/api";
-import { Id } from "@convex/_generated/dataModel";
-import type { ReturnCondition } from "@convex/shared/catalog";
 import { LOAN_POLICY } from "@convex/shared/policy";
 import { useMutation } from "convex/react";
 import { useState } from "react";
 import { ReturnConditionOptions } from "./ReturnConditionOptions";
 import { DialogActions } from "@/components/shared/DialogActions";
-
-interface ConfirmReturnDialogProps {
-  loanId: Id<"loans">;
-  toolName: string;
-  borrowerName: string;
-  forUnavailableOwner?: boolean;
-}
+import type { ReturnCondition } from "@convex/types";
+import type { ConfirmReturnDialogProps } from "@/types";
 
 export function ConfirmReturnDialog({
   loanId,

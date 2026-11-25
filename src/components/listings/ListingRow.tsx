@@ -2,13 +2,13 @@ import { ToolPhoto } from "@/components/tools/ToolPhoto";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { categoryLabel } from "@/lib/categories";
-import type { OwnListing } from "@/lib/convexTypes";
 import { editListingRoute, toolRoute } from "@/lib/routes";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { RemoveListingButton } from "./RemoveListingButton";
+import type { ListingRowProps } from "@/types";
 
-export function ListingRow({ listing }: { listing: OwnListing }) {
+export function ListingRow({ listing }: ListingRowProps) {
   const [cover] = listing.photos;
 
   return (

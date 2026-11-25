@@ -1,14 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { SignInButton } from "@clerk/nextjs";
-import type { ComponentProps } from "react";
+import type { SignInCtaProps } from "@/types";
 
-type ButtonVariant = ComponentProps<typeof Button>["variant"];
-
-export function SignInCta({
-  variant = "default",
-}: {
-  variant?: ButtonVariant;
-}) {
+export function SignInCta({ variant = "default" }: SignInCtaProps) {
   return (
     <SignInButton mode="modal" withSignUp>
       <Button variant={variant}>Sign in to lend or borrow</Button>

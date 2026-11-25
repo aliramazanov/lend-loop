@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 import {
   RETURN_CONDITION_LABELS,
   RETURN_CONDITIONS,
-  type ReturnCondition,
 } from "@convex/shared/catalog";
+import type { ReturnCondition } from "@convex/types";
+import type { ReturnConditionOptionsProps } from "@/types";
 
 const HINTS: Record<ReturnCondition, string> = {
   as_expected: "Same condition as when it left",
@@ -17,11 +18,6 @@ const OPTIONS = RETURN_CONDITIONS.map((value) => ({
   label: RETURN_CONDITION_LABELS[value],
   hint: HINTS[value],
 }));
-
-interface ReturnConditionOptionsProps {
-  value: ReturnCondition;
-  onChange: (condition: ReturnCondition) => void;
-}
 
 export function ReturnConditionOptions({
   value,

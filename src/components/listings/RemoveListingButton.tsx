@@ -1,9 +1,9 @@
 import { api } from "@convex/_generated/api";
-import type { Id } from "@convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Trash2 } from "lucide-react";
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
+import type { RemoveListingButtonProps } from "@/types";
 
 const COPY = {
   owner: {
@@ -21,13 +21,6 @@ const COPY = {
     successMessage: "Listing removed.",
   },
 } as const;
-
-interface RemoveListingButtonProps {
-  toolId: Id<"tools">;
-  toolName: string;
-  asAdmin?: boolean;
-  onRemoved?: () => void;
-}
 
 export function RemoveListingButton({
   toolId,

@@ -1,12 +1,9 @@
+import type { LengthRange } from "../types";
+
 // ZWJ stays allowed so emoji sequences such as family or flag emoji survive.
 const HIDDEN_CHARACTER = /(?!\u200D)[\p{Cc}\p{Cf}]/u;
 const HIDDEN_CHARACTER_EXCEPT_NEWLINE = /(?![\n\u200D])[\p{Cc}\p{Cf}]/u;
 const HIDDEN_CHARACTERS = /(?!\u200D)[\p{Cc}\p{Cf}]/gu;
-
-export interface LengthRange {
-  min: number;
-  max: number;
-}
 
 export function normalizeText(text: string): string {
   return text.normalize("NFC").trim();

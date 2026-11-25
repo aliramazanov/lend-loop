@@ -7,17 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { parseChoice } from "@/lib/choices";
-
-interface SelectFieldProps<Option extends string> {
-  id: string;
-  name: string;
-  label: string;
-  options: readonly Option[];
-  defaultValue: Option;
-  labelOf?: (option: Option) => string;
-  onChange?: (option: Option) => void;
-  className?: string;
-}
+import type { SelectFieldProps } from "@/types";
 
 export function SelectField<Option extends string>({
   id,

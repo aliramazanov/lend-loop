@@ -6,7 +6,8 @@ import { RETURN_CONDITION_LABELS } from "../shared/catalog";
 import { recordAudit } from "./audit";
 import { requireAdmin } from "./auth";
 import { assertLoanStatus, getLoanOrThrow } from "./loanAccess";
-import { recordReturn, type ReturnReport } from "./loanReturns";
+import { recordReturn } from "./loanReturns";
+import type { ReturnReport } from "../types";
 
 export function isUnavailable(user: Doc<"users"> | null): boolean {
   return !user || Boolean(user.suspendedAt || user.deletedAt);

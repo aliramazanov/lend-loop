@@ -5,13 +5,9 @@ import {
   parseISO,
 } from "date-fns";
 import { millisecondsInDay } from "date-fns/constants";
+import type { DateRange } from "../types";
 
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
-export interface DateRange {
-  startDate: string;
-  endDate: string;
-}
 
 export function todayUtc(now = Date.now()): string {
   const [date] = new Date(now).toISOString().split("T");

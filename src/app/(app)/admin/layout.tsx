@@ -4,7 +4,7 @@ import { api } from "@convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
+import type { AdminLayoutProps } from "@/types";
 
 export const metadata: Metadata = { title: "Admin" };
 
@@ -16,11 +16,7 @@ async function isAdmin(): Promise<boolean> {
   return user?.role === "admin";
 }
 
-export default async function AdminLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default async function AdminLayout({ children }: AdminLayoutProps) {
   if (!(await isAdmin())) notFound();
 
   return (

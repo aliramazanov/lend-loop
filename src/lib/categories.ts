@@ -1,4 +1,5 @@
-import { CATEGORIES, type Category } from "@convex/shared/catalog";
+import { CATEGORIES } from "@convex/shared/catalog";
+import type { Category } from "@convex/types";
 
 export function categoryToSlug(category: Category): string {
   return category.replaceAll(" ", "-");

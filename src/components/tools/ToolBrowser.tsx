@@ -2,15 +2,15 @@
 
 import { EmptyState } from "@/components/shared/EmptyState";
 import { api } from "@convex/_generated/api";
-import type { Category } from "@convex/shared/catalog";
 import { useQuery } from "convex/react";
 import { useState } from "react";
 import { CategoryFilter } from "./CategoryFilter";
 import { ToolCard } from "./ToolCard";
 import { toolGridClasses, ToolGridSkeleton } from "./ToolGridSkeleton";
 import { ToolSearch } from "./ToolSearch";
+import type { ToolBrowserProps } from "@/types";
 
-export function ToolBrowser({ category }: { category?: Category }) {
+export function ToolBrowser({ category }: ToolBrowserProps) {
   const tools = useQuery(api.tools.listBoard, { category });
   const [search, setSearch] = useState("");
   const term = search.trim().toLowerCase();

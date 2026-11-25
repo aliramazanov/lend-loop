@@ -1,13 +1,8 @@
-import type { Id } from "@convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
 import { RemoveListingButton } from "@/components/listings/RemoveListingButton";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-
-interface AdminRemovePanelProps {
-  toolId: Id<"tools">;
-  toolName: string;
-}
+import type { AdminRemovePanelProps } from "@/types";
 
 export function AdminRemovePanel({ toolId, toolName }: AdminRemovePanelProps) {
   const router = useRouter();

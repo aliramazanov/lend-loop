@@ -1,11 +1,11 @@
 import { categoryLabel } from "@/lib/categories";
-import type { BoardTool } from "@/lib/convexTypes";
 import { toolRoute } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { CONDITION_LABELS } from "@convex/shared/catalog";
 import { Images } from "lucide-react";
 import Link from "next/link";
 import { ToolPhoto } from "./ToolPhoto";
+import type { ToolCardProps } from "@/types";
 
 const cardClasses = cn(
   "group block h-full overflow-hidden rounded-xl border bg-card",
@@ -15,7 +15,7 @@ const cardClasses = cn(
   "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
 );
 
-export function ToolCard({ tool }: { tool: BoardTool }) {
+export function ToolCard({ tool }: ToolCardProps) {
   const [coverUrl] = tool.photoUrls;
   const photoCount = tool.photoUrls.length;
 

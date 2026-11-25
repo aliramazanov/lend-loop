@@ -1,17 +1,12 @@
 import { ActionButton } from "@/components/shared/ActionButton";
 import { SectionHeading } from "@/components/shared/SectionHeading";
-import type { RemovedListing } from "@/lib/convexTypes";
 import { formatDate } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { RotateCcw } from "lucide-react";
 import { useId } from "react";
-
-interface RemovedListingsProps {
-  title: string;
-  listings: RemovedListing[];
-}
+import type { RemovedListing, RemovedListingsProps } from "@/types";
 
 function removedLabel({ ownerName, archivedAt }: RemovedListing): string {
   const removedOn = formatDate(archivedAt);

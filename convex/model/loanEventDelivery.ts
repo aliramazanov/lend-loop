@@ -1,4 +1,4 @@
-import { Infer, v } from "convex/values";
+import { v } from "convex/values";
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";
 import { HTTP_LIMITS, N8N_DELIVERY } from "../lib/config";
@@ -8,6 +8,7 @@ import { idempotencyKeys } from "../lib/events";
 import { formatSignature, signHmacSha256 } from "../lib/hmac";
 import { SIGNATURE_HEADERS } from "../lib/httpRoutes";
 import { loanEventValidator } from "../lib/validators";
+import type { DeliveryResult, LoanEventPayload, WebhookTarget } from "../types";
 
 export const loanEventPayload = v.object({
   eventId: v.string(),
@@ -19,15 +20,6 @@ export const loanEventPayload = v.object({
   endDate: v.string(),
   recipientName: v.string(),
 });
-
-type LoanEventPayload = Infer<typeof loanEventPayload>;
-
-type DeliveryResult = { ok: true } | { ok: false; reason: string };
-
-interface WebhookTarget {
-  url: string;
-  secret: string;
-}
 
 function retryDelayMs(attempt: number): number {
   const exponential = N8N_DELIVERY.firstRetryDelayMs * 2 ** attempt;

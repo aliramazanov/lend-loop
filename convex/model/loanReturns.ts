@@ -3,7 +3,7 @@ import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { enforceRateLimit } from "../lib/rateLimiter";
 import { normalizeText, stripHiddenCharacters } from "../lib/text";
-import { RETURN_CONDITION_LABELS, ReturnCondition } from "../shared/catalog";
+import { RETURN_CONDITION_LABELS } from "../shared/catalog";
 import { LOAN_POLICY } from "../shared/policy";
 import { recordAudit } from "./audit";
 import { assertLoanStatus, requireLoanRole } from "./loanAccess";
@@ -13,12 +13,7 @@ import {
   notifyLoanChange,
   transitionLoan,
 } from "./loanTransitions";
-
-export interface ReturnReport {
-  loanId: Id<"loans">;
-  condition: ReturnCondition;
-  note?: string;
-}
+import type { AuditReportedIssueArgs, ReturnReport } from "../types";
 
 function cleanNote(note: string | undefined): string {
   const text = normalizeText(stripHiddenCharacters(note ?? ""));
@@ -29,7 +24,7 @@ function cleanNote(note: string | undefined): string {
 async function auditReportedIssue(
   ctx: MutationCtx,
   loan: Doc<"loans">,
-  report: { condition: ReturnCondition; note: string },
+  report: AuditReportedIssueArgs,
 ) {
   const lender = await ctx.db.get("users", loan.lenderId);
   const tool = await ctx.db.get("tools", loan.toolId);

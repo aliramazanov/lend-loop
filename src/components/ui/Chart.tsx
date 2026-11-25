@@ -1,10 +1,14 @@
-import type { CSSProperties, ReactNode } from "react";
 import {
   ResponsiveContainer,
   Tooltip,
   type TooltipContentProps,
 } from "recharts";
 import { cn } from "@/lib/utils";
+import type {
+  ChartFrameProps,
+  ChartTooltipProps,
+  TooltipCardProps,
+} from "@/types";
 
 export const CHART_THEME = {
   bar: "var(--color-primary)",
@@ -12,17 +16,6 @@ export const CHART_THEME = {
   cursor: "var(--color-muted)",
   tick: "var(--color-stone-600)",
 } as const;
-
-interface ChartFrameProps {
-  className?: string;
-  style?: CSSProperties;
-  children: ReactNode;
-}
-
-interface TooltipCardProps extends TooltipContentProps {
-  valueLabel: string;
-  hideLabel: boolean;
-}
 
 export function ChartFrame({ className, style, children }: ChartFrameProps) {
   return (
@@ -63,10 +56,7 @@ function TooltipCard({
 export function ChartTooltip({
   valueLabel,
   hideLabel = false,
-}: {
-  valueLabel: string;
-  hideLabel?: boolean;
-}) {
+}: ChartTooltipProps) {
   return (
     <Tooltip
       cursor={{ fill: CHART_THEME.cursor }}

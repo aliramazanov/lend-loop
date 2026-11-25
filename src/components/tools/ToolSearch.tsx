@@ -1,11 +1,7 @@
 import { Input } from "@/components/ui/Field";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
-
-interface ToolSearchProps {
-  value: string;
-  onChange: (value: string) => void;
-}
+import type { ToolSearchProps } from "@/types";
 
 export function ToolSearch({ value, onChange }: ToolSearchProps) {
   return (

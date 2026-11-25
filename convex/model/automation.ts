@@ -1,14 +1,12 @@
-import { Doc, Id } from "../_generated/dataModel";
+import { Doc } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";
-import { idempotencyKeys, type AutomationEventType } from "../lib/events";
-
-export interface AutomationRecord {
-  loanId?: Id<"loans">;
-  idempotencyKey: string;
-  eventType: AutomationEventType;
-  summary: string;
-}
+import { idempotencyKeys } from "../lib/events";
+import type {
+  AutomationEventType,
+  AutomationRecord,
+  RecordWorkflowErrorArgs,
+} from "../types";
 
 function reminderFields(
   eventType: AutomationEventType,
@@ -70,7 +68,7 @@ export async function recordAutomationEvent(
 
 export async function recordWorkflowError(
   ctx: MutationCtx,
-  report: { executionId: string; summary: string; loanId?: string },
+  report: RecordWorkflowErrorArgs,
 ) {
   const loanId = report.loanId
     ? ctx.db.normalizeId("loans", report.loanId)

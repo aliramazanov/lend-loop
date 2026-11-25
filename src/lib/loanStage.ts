@@ -1,17 +1,6 @@
-import type { BadgeTone } from "@/components/ui/Badge";
-import type { LoanStatus } from "@convex/shared/catalog";
-import type { LoanView } from "./convexTypes";
 import { daysSince } from "./dates";
-
-export interface LoanStage {
-  tone: BadgeTone;
-  label: string;
-}
-
-type StageInput = Pick<
-  LoanView,
-  "status" | "hasStarted" | "isOverdue" | "returnCondition"
->;
+import type { LoanStage, StageInput } from "@/types";
+import type { LoanStatus } from "@convex/types";
 
 const STATUS_STAGES: Record<LoanStatus, LoanStage> = {
   pending: { tone: "warning", label: "Pending" },

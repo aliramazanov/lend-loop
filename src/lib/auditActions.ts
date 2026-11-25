@@ -1,10 +1,5 @@
-import type { BadgeTone } from "@/components/ui/Badge";
-import type { AuditAction } from "@convex/lib/events";
-
-interface AuditActionStyle {
-  label: string;
-  tone: BadgeTone;
-}
+import type { AuditActionStyle } from "@/types";
+import type { AuditAction } from "@convex/types";
 
 export const AUDIT_ACTION_STYLES: Record<AuditAction, AuditActionStyle> = {
   listing_deleted_by_owner: { label: "Removed listing", tone: "neutral" },

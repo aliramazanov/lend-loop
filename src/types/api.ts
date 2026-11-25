@@ -1,7 +1,7 @@
 import type { api } from "@convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
 
-type ItemOf<List> = List extends readonly (infer Item)[] ? Item : never;
+export type ItemOf<List> = List extends readonly (infer Item)[] ? Item : never;
 
 export type CurrentUser = NonNullable<
   FunctionReturnType<typeof api.users.getCurrentUser>

@@ -1,14 +1,9 @@
 import { categoryLabel } from "@/lib/categories";
 import { browseRoute } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { CATEGORIES, type Category } from "@convex/shared/catalog";
+import { CATEGORIES } from "@convex/shared/catalog";
 import Link from "next/link";
-
-interface FilterChipProps {
-  href: string;
-  isActive: boolean;
-  label: string;
-}
+import type { CategoryFilterProps, FilterChipProps } from "@/types";
 
 function FilterChip({ href, isActive, label }: FilterChipProps) {
   return (
@@ -28,7 +23,7 @@ function FilterChip({ href, isActive, label }: FilterChipProps) {
   );
 }
 
-export function CategoryFilter({ selected }: { selected?: Category }) {
+export function CategoryFilter({ selected }: CategoryFilterProps) {
   return (
     <nav
       aria-label="Filter by category"

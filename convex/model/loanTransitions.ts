@@ -1,25 +1,12 @@
 import { internal } from "../_generated/api";
-import { Doc, Id } from "../_generated/dataModel";
+import { Doc } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
-import { datesOverlap, type DateRange } from "../lib/dates";
-import { loanEventId, type LoanEvent } from "../lib/events";
-import { LoanStatus } from "../shared/catalog";
+import { datesOverlap } from "../lib/dates";
+import { loanEventId } from "../lib/events";
 import { scheduleLoanEmail } from "./emailScheduling";
 import { isOpen } from "./loanRules";
 import { loansForTool } from "./loanStore";
-
-interface LoanNotice {
-  loan: Doc<"loans">;
-  event: LoanEvent;
-  recipientId: Id<"users">;
-}
-
-interface LoanTransition {
-  status: LoanStatus;
-  event: LoanEvent;
-  recipientId: Id<"users">;
-  fields?: Partial<Doc<"loans">>;
-}
+import type { DateRange, LoanNotice, LoanTransition } from "../types";
 
 export async function notifyLoanChange(
   ctx: MutationCtx,

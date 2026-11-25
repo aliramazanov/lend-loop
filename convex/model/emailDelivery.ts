@@ -1,4 +1,4 @@
-import { Infer, v } from "convex/values";
+import { v } from "convex/values";
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";
 import { CLERK_API_URL, EMAIL_DELIVERY, RESEND_API_URL } from "../lib/config";
@@ -6,7 +6,8 @@ import { clerkSecretKey, resendConfig } from "../lib/env";
 import { idempotencyKeys } from "../lib/events";
 import { objectField, stringField } from "../lib/httpResponses";
 import { emailKindValidator } from "../lib/validators";
-import { composeEmail, type EmailMessage } from "./emailMessages";
+import { composeEmail } from "./emailMessages";
+import type { EmailMessage, LoanEmail } from "../types";
 
 export const loanEmailPayload = v.object({
   emailId: v.string(),
@@ -17,8 +18,6 @@ export const loanEmailPayload = v.object({
   startDate: v.string(),
   endDate: v.string(),
 });
-
-type LoanEmail = Infer<typeof loanEmailPayload>;
 
 function primaryEmail(clerkUser: object | null): string | undefined {
   const primaryId = stringField(clerkUser, "primary_email_address_id");

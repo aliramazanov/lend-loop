@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/Card";
-import type { ReactNode } from "react";
+import type { EmptyStateProps } from "@/types";
 
-export function EmptyState({ children }: { children: ReactNode }) {
+export function EmptyState({ children }: EmptyStateProps) {
   return (
     <Card className="p-10 text-center text-sm text-muted-foreground">
       {children}

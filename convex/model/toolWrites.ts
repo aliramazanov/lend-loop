@@ -3,7 +3,6 @@ import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { forbidden, notFound } from "../lib/errors";
 import { enforceRateLimit } from "../lib/rateLimiter";
-import { Category, Condition } from "../shared/catalog";
 import { recordAudit } from "./audit";
 import { requireUser } from "./auth";
 import { bookedLoansForTool, loansForTool } from "./loanStore";
@@ -11,14 +10,7 @@ import { declineRequests } from "./loanTransitions";
 import { validateToolInput } from "./toolInput";
 import { assertValidPhotos, deleteDroppedPhotos } from "./toolPhotos";
 import { assertCanAddListing, getActiveToolOrThrow } from "./toolStore";
-
-export interface ToolFields {
-  name: string;
-  category: Category;
-  condition: Condition;
-  shortDescription: string;
-  photoIds?: Id<"_storage">[];
-}
+import type { ToolFields } from "../types";
 
 function canModerate(user: Doc<"users">, tool: Doc<"tools">): boolean {
   return user.role === "admin" || tool.ownerId === user._id;

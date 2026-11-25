@@ -1,12 +1,12 @@
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { ActionButton } from "@/components/shared/ActionButton";
-import type { LoanView } from "@/lib/convexTypes";
 import { ConfirmReturnDialog } from "./ConfirmReturnDialog";
 import { HandoverCheck, needsHandoverCheck } from "./HandoverCheck";
 import { CancelLoanButton, DecisionButtons } from "./LoanButtons";
+import type { LenderActionsProps } from "@/types";
 
-export function LenderActions({ loan }: { loan: LoanView }) {
+export function LenderActions({ loan }: LenderActionsProps) {
   const approve = useMutation(api.loans.approve);
   const decline = useMutation(api.loans.decline);
   const confirmHandover = useMutation(api.loans.confirmHandover);

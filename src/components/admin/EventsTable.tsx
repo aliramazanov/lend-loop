@@ -8,19 +8,7 @@ import {
 } from "@/components/ui/Table";
 import { formatDateTime } from "@/lib/dates";
 import { cn } from "@/lib/utils";
-
-interface TimelineEvent {
-  _id: string;
-  summary: string;
-  createdAt: number;
-}
-
-interface EventsTableProps {
-  heading: string;
-  emptyText: string;
-  events: TimelineEvent[];
-  summaryClassName?: string;
-}
+import type { EventsTableProps } from "@/types";
 
 export function EventsTable({
   heading,

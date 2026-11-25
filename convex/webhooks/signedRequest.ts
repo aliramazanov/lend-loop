@@ -3,9 +3,7 @@ import { n8nCallbackSecret } from "../lib/env";
 import { verifyHmacSha256 } from "../lib/hmac";
 import { errorResponse, HTTP_STATUS } from "../lib/httpResponses";
 import { SIGNATURE_HEADERS } from "../lib/httpRoutes";
-
-export type SignedRequest =
-  { ok: true; rawBody: string } | { ok: false; response: Response };
+import type { SignedRequest } from "../types";
 
 function signedPayload(request: Request, rawBody: string): string {
   const { pathname } = new URL(request.url);

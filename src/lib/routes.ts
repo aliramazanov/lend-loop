@@ -1,5 +1,5 @@
-import type { Category } from "@convex/shared/catalog";
 import { categoryToSlug } from "./categories";
+import type { Category } from "@convex/types";
 
 export const ROUTES = {
   home: "/",

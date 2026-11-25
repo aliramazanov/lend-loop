@@ -1,11 +1,15 @@
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
 import { Label, Textarea } from "@/components/ui/Field";
-import type { AdminUser } from "@/lib/convexTypes";
 import { api } from "@convex/_generated/api";
 import { MODERATION_POLICY } from "@convex/shared/policy";
 import { useMutation } from "convex/react";
 import { useState } from "react";
+import type {
+  AccessControlProps,
+  ReinstateButtonProps,
+  SuspendButtonProps,
+} from "@/types";
 
 const { suspensionReasonLength } = MODERATION_POLICY;
 
@@ -15,7 +19,7 @@ const SUSPEND_DESCRIPTION =
 const REINSTATE_DESCRIPTION =
   "They can sign in, list and borrow again. Their hidden listings stay hidden until they restore them.";
 
-function ReinstateButton({ user }: { user: AdminUser }) {
+function ReinstateButton({ user }: ReinstateButtonProps) {
   const reinstate = useMutation(api.users.reinstate);
 
   return (
@@ -35,7 +39,7 @@ function ReinstateButton({ user }: { user: AdminUser }) {
   );
 }
 
-function SuspendButton({ user }: { user: AdminUser }) {
+function SuspendButton({ user }: SuspendButtonProps) {
   const suspend = useMutation(api.users.suspend);
   const [reason, setReason] = useState("");
   const trimmedReason = reason.trim();
@@ -72,7 +76,7 @@ function SuspendButton({ user }: { user: AdminUser }) {
   );
 }
 
-export function AccessControl({ user }: { user: AdminUser }) {
+export function AccessControl({ user }: AccessControlProps) {
   if (user.role === "admin") {
     return <span className="text-xs text-muted-foreground">Admin</span>;
   }

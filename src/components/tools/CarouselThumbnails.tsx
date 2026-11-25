@@ -1,7 +1,8 @@
 import { useCarousel } from "@/components/ui/Carousel";
 import { cn } from "@/lib/utils";
+import type { CarouselThumbnailsProps } from "@/types";
 
-export function CarouselThumbnails({ photoUrls }: { photoUrls: string[] }) {
+export function CarouselThumbnails({ photoUrls }: CarouselThumbnailsProps) {
   const { selectedIndex, scrollTo } = useCarousel();
 
   return (

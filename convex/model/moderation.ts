@@ -13,6 +13,7 @@ import { MODERATION_POLICY } from "../shared/policy";
 import { closeOpenLoans, hideListings } from "./accountClosure";
 import { recordAudit } from "./audit";
 import { requireAdmin } from "./auth";
+import type { SetTrustedLenderArgs, SuspendArgs } from "../types";
 
 const { suspensionReasonLength } = MODERATION_POLICY;
 
@@ -73,7 +74,7 @@ async function scheduleClerkBan(
 
 export async function setTrustedLender(
   ctx: MutationCtx,
-  { userId, trustedLender }: { userId: Id<"users">; trustedLender: boolean },
+  { userId, trustedLender }: SetTrustedLenderArgs,
 ) {
   const { admin, target } = await requireModerationTarget(ctx, userId);
 
@@ -94,7 +95,7 @@ export async function setTrustedLender(
 
 export async function suspend(
   ctx: MutationCtx,
-  { userId, reason: rawReason }: { userId: Id<"users">; reason: string },
+  { userId, reason: rawReason }: SuspendArgs,
 ) {
   const { admin, target } = await requireModerationTarget(ctx, userId);
   const reason = cleanReason(rawReason);

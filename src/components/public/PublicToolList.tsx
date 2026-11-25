@@ -1,12 +1,9 @@
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Card } from "@/components/ui/Card";
 import { categoryLabel } from "@/lib/categories";
-import type { api } from "@convex/_generated/api";
-import type { FunctionReturnType } from "convex/server";
+import type { PublicToolListProps } from "@/types";
 
-type PublicTools = FunctionReturnType<typeof api.tools.listPublicBoard>;
-
-export function PublicToolList({ tools }: { tools: PublicTools }) {
+export function PublicToolList({ tools }: PublicToolListProps) {
   if (tools.length === 0) {
     return (
       <EmptyState>

@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import type { Category } from "@convex/shared/catalog";
 import {
   CookingPot,
   Drill,
@@ -10,6 +9,8 @@ import {
   Tv,
   type LucideIcon,
 } from "lucide-react";
+import type { Category } from "@convex/types";
+import type { ToolPhotoProps } from "@/types";
 
 const CATEGORY_ICONS: Record<Category, LucideIcon> = {
   "power tools": Drill,
@@ -20,13 +21,6 @@ const CATEGORY_ICONS: Record<Category, LucideIcon> = {
   sports: Dumbbell,
   other: Package,
 };
-
-interface ToolPhotoProps {
-  name: string;
-  category: Category;
-  photoUrl: string | null;
-  className?: string;
-}
 
 export function ToolPhoto({
   name,

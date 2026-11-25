@@ -1,20 +1,10 @@
 import { compressImage } from "@/lib/compressImage";
 import { api } from "@convex/_generated/api";
-import { Id } from "@convex/_generated/dataModel";
 import { PHOTO_POLICY } from "@convex/shared/policy";
 import { useMutation } from "convex/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-
-type StorageId = Id<"_storage">;
-
-export type PhotoDraft =
-  | { kind: "saved"; key: string; url: string; storageId: StorageId }
-  | { kind: "new"; key: string; url: string; file: File };
-
-interface UploadResponse {
-  storageId: StorageId;
-}
+import type { PhotoDraft, StorageId, UploadResponse } from "@/types";
 
 function isUploadResponse(body: unknown): body is UploadResponse {
   return (

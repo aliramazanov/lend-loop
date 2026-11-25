@@ -1,15 +1,10 @@
 import { categoryLabel } from "@/lib/categories";
 import { browseRoute } from "@/lib/routes";
-import type { Category } from "@convex/shared/catalog";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import type { BreadcrumbsProps } from "@/types";
 
 const crumbClasses = "font-medium text-primary-hover hover:underline";
-
-interface BreadcrumbsProps {
-  category: Category;
-  toolName: string;
-}
 
 export function Breadcrumbs({ category, toolName }: BreadcrumbsProps) {
   return (

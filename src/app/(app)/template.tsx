@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { PageTransitionProps } from "@/types";
 
-export default function PageTransition({ children }: { children: ReactNode }) {
+export default function PageTransition({ children }: PageTransitionProps) {
   return (
     <div
       className={cn(

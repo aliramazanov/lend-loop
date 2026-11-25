@@ -1,17 +1,4 @@
-import { EmailKind } from "../lib/events";
-
-export interface EmailDetails {
-  toolName: string;
-  startDate: string;
-  endDate: string;
-}
-
-export interface EmailMessage {
-  subject: string;
-  text: string;
-}
-
-type Compose = (details: EmailDetails) => EmailMessage;
+import type { Compose, EmailDetails, EmailKind, EmailMessage } from "../types";
 
 const SIGN_OFF = "Open LendLoop to see the details.\n\nThe LendLoop team";
 

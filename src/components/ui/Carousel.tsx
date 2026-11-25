@@ -10,18 +10,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { Button } from "./Button";
-
-type EmblaApi = NonNullable<ReturnType<typeof useEmblaCarousel>[1]>;
-
-interface CarouselState {
-  carouselRef: ReturnType<typeof useEmblaCarousel>[0];
-  selectedIndex: number;
-  canScrollPrev: boolean;
-  canScrollNext: boolean;
-  scrollTo: (index: number) => void;
-  scrollPrev: () => void;
-  scrollNext: () => void;
-}
+import type { CarouselArrowProps, CarouselState, EmblaApi } from "@/types";
 
 const CarouselContext = createContext<CarouselState | null>(null);
 
@@ -121,11 +110,6 @@ export function CarouselItem({ className, ...props }: ComponentProps<"li">) {
       {...props}
     />
   );
-}
-
-interface CarouselArrowProps {
-  direction: "previous" | "next";
-  className?: string;
 }
 
 export function CarouselArrow({ direction, className }: CarouselArrowProps) {

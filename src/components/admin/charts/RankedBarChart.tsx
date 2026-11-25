@@ -1,7 +1,7 @@
 import { CHART_THEME, ChartFrame, ChartTooltip } from "@/components/ui/Chart";
 import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 import { CHARTS } from "@/lib/config";
-import type { ChartProps } from "./ChartCard";
+import type { ChartProps } from "@/types";
 
 const LAYOUT = CHARTS.ranked;
 

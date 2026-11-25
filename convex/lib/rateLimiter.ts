@@ -7,6 +7,7 @@ import { ConvexError } from "convex/values";
 import { components } from "../_generated/api";
 import { Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
+import type { RateLimitName } from "../types";
 
 export const RATE_LIMITS = {
   borrowRequest: { kind: "fixed window", rate: 10, period: HOUR },
@@ -15,8 +16,6 @@ export const RATE_LIMITS = {
   adminAction: { kind: "fixed window", rate: 60, period: HOUR },
   photoUpload: { kind: "fixed window", rate: 30, period: HOUR },
 } as const satisfies Record<string, RateLimitConfig>;
-
-export type RateLimitName = keyof typeof RATE_LIMITS;
 
 const rateLimiter = new RateLimiter(components.rateLimiter, RATE_LIMITS);
 

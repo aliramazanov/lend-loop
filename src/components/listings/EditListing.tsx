@@ -8,8 +8,9 @@ import { api } from "@convex/_generated/api";
 import { useQuery } from "convex/react";
 import Link from "next/link";
 import { ToolForm } from "./ToolForm";
+import type { EditListingProps } from "@/types";
 
-export function EditListing({ toolId }: { toolId: string }) {
+export function EditListing({ toolId }: EditListingProps) {
   const listing = useQuery(api.tools.getMyListing, { toolId });
 
   if (listing === undefined) return <LoadingState label="Loading listing..." />;

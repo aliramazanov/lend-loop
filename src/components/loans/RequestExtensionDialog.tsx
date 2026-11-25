@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { Input, Label } from "@/components/ui/Field";
-import type { LoanView } from "@/lib/convexTypes";
 import { addDaysToIsoDate } from "@/lib/dates";
 import { withToast } from "@/lib/toast";
 import { api } from "@convex/_generated/api";
@@ -17,8 +16,9 @@ import { useMutation } from "convex/react";
 import { useState } from "react";
 import { CALENDAR } from "@/lib/config";
 import { DialogActions } from "@/components/shared/DialogActions";
+import type { RequestExtensionDialogProps } from "@/types";
 
-export function RequestExtensionDialog({ loan }: { loan: LoanView }) {
+export function RequestExtensionDialog({ loan }: RequestExtensionDialogProps) {
   const requestExtension = useMutation(api.loans.requestExtension);
   const earliest = addDaysToIsoDate(loan.endDate, 1);
   const latest = addDaysToIsoDate(loan.startDate, CALENDAR.lastDayOffset);

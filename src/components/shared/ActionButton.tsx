@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { withToast } from "@/lib/toast";
-import { useState, type ComponentProps } from "react";
-
-interface ActionButtonProps extends Omit<
-  ComponentProps<typeof Button>,
-  "onClick" | "asChild"
-> {
-  action: () => Promise<unknown>;
-  successMessage: string;
-  onSuccess?: () => void;
-}
+import { useState } from "react";
+import type { ActionButtonProps } from "@/types";
 
 export function ActionButton({
   action,

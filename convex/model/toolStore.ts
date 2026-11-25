@@ -1,12 +1,10 @@
 import { ConvexError } from "convex/values";
-import { Doc, Id } from "../_generated/dataModel";
+import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";
 import { notFound } from "../lib/errors";
-import { Category } from "../shared/catalog";
 import { LISTING_POLICY } from "../shared/policy";
-
-type Tool = Doc<"tools">;
+import type { Category, Tool } from "../types";
 
 export function isArchived(tool: Tool): boolean {
   return tool.archivedAt !== undefined;

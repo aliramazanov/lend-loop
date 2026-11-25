@@ -1,14 +1,14 @@
 import { Card } from "@/components/ui/Card";
 import { categoryLabel } from "@/lib/categories";
-import type { ToolDetailsView } from "@/lib/convexTypes";
 import { ROUTES } from "@/lib/routes";
 import { CONDITION_LABELS } from "@convex/shared/catalog";
 import Link from "next/link";
 import { AvailabilityBadge } from "./AvailabilityBadge";
 import { AvailabilityCalendar } from "./AvailabilityCalendar";
 import { BorrowPanel } from "./BorrowPanel";
+import type { ToolSummaryCardProps } from "@/types";
 
-export function ToolSummaryCard({ tool }: { tool: ToolDetailsView }) {
+export function ToolSummaryCard({ tool }: ToolSummaryCardProps) {
   const canBorrow = !tool.isOwner && !tool.isArchived;
   const isOwnActiveListing = tool.isOwner && !tool.isArchived;
 

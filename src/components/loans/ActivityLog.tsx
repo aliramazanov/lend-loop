@@ -1,9 +1,9 @@
-import type { LoanView } from "@/lib/convexTypes";
 import { formatDateTime } from "@/lib/dates";
 import { reminderNote } from "@/lib/loanStage";
 import { useId, useState } from "react";
+import type { ActivityLogProps } from "@/types";
 
-export function ActivityLog({ loan }: { loan: LoanView }) {
+export function ActivityLog({ loan }: ActivityLogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const listId = useId();
 

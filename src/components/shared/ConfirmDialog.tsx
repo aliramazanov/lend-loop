@@ -10,21 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/AlertDialog";
 import { withToast } from "@/lib/toast";
-import type { ComponentProps, ReactNode } from "react";
-
-interface ConfirmDialogProps {
-  trigger: ReactNode;
-  title: string;
-  description: ReactNode;
-  confirmLabel: string;
-  confirmVariant?: ComponentProps<typeof AlertDialogAction>["variant"];
-  confirmDisabled?: boolean;
-  action: () => Promise<unknown>;
-  successMessage: string;
-  onSuccess?: () => void;
-  onOpenChange?: (open: boolean) => void;
-  children?: ReactNode;
-}
+import type { ConfirmDialogProps } from "@/types";
 
 export function ConfirmDialog({
   trigger,

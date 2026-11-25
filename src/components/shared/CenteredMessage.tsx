@@ -1,11 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
-
-interface CenteredMessageProps {
-  title: string;
-  description?: string;
-  children?: ReactNode;
-}
+import type { CenteredMessageProps } from "@/types";
 
 export function CenteredMessage({
   title,

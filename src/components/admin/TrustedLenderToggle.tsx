@@ -1,10 +1,10 @@
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
-import type { AdminUser } from "@/lib/convexTypes";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
+import type { TrustedLenderToggleProps } from "@/types";
 
-export function TrustedLenderToggle({ user }: { user: AdminUser }) {
+export function TrustedLenderToggle({ user }: TrustedLenderToggleProps) {
   const setTrustedLender = useMutation(api.users.setTrustedLender);
   const isTrusted = user.trustedLender;
 

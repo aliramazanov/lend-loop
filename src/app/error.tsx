@@ -2,11 +2,7 @@
 
 import { CenteredMessage } from "@/components/shared/CenteredMessage";
 import { Button } from "@/components/ui/Button";
-
-interface ErrorPageProps {
-  error: Error & { digest?: string };
-  reset: () => void;
-}
+import type { ErrorPageProps } from "@/types";
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (

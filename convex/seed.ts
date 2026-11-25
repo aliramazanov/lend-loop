@@ -1,19 +1,5 @@
 import { internalMutation } from "./_generated/server";
-import { Category, Condition } from "./shared/catalog";
-
-interface SeedTool {
-  name: string;
-  category: Category;
-  condition: Condition;
-  shortDescription: string;
-}
-
-interface SeedNeighbor {
-  clerkId: string;
-  name: string;
-  trustedLender: boolean;
-  tools: SeedTool[];
-}
+import type { SeedNeighbor } from "./types";
 
 const NEIGHBORS: SeedNeighbor[] = [
   {

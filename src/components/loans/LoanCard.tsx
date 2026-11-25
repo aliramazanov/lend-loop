@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/Card";
-import type { ListedLoan } from "@/lib/convexTypes";
 import { formatDay } from "@/lib/dates";
 import { toolRoute } from "@/lib/routes";
 import Link from "next/link";
@@ -8,11 +7,7 @@ import { BorrowerActions } from "./BorrowerActions";
 import { LenderActions } from "./LenderActions";
 import { LoanNotices } from "./LoanNotices";
 import { LoanStatusBadge } from "./LoanStatusBadge";
-
-interface LoanCardProps {
-  loan: ListedLoan;
-  perspective: "borrower" | "lender";
-}
+import type { LoanCardProps } from "@/types";
 
 export function LoanCard({ loan, perspective }: LoanCardProps) {
   const isLender = perspective === "lender";

@@ -1,9 +1,5 @@
-import { Badge, type BadgeTone } from "@/components/ui/Badge";
-
-interface Availability {
-  tone: BadgeTone;
-  label: string;
-}
+import { Badge } from "@/components/ui/Badge";
+import type { Availability, AvailabilityBadgeProps } from "@/types";
 
 function availabilityOf(
   isArchived: boolean,
@@ -19,10 +15,7 @@ function availabilityOf(
 export function AvailabilityBadge({
   isArchived,
   isAvailable,
-}: {
-  isArchived: boolean;
-  isAvailable: boolean;
-}) {
+}: AvailabilityBadgeProps) {
   const { tone, label } = availabilityOf(isArchived, isAvailable);
 
   return (

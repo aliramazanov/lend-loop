@@ -2,15 +2,13 @@ import { ConvexError } from "convex/values";
 import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { forbidden, notFound } from "../lib/errors";
-import { LoanStatus } from "../shared/catalog";
 import { requireUser } from "./auth";
-
-type LoanRole = "lender" | "borrower";
-
-interface LoanAccess {
-  user: Doc<"users">;
-  loan: Doc<"loans">;
-}
+import type {
+  LoanAccess,
+  LoanRole,
+  LoanStatus,
+  RequireLoanRoleArgs,
+} from "../types";
 
 export async function getLoanOrThrow(ctx: MutationCtx, loanId: Id<"loans">) {
   const loan = await ctx.db.get("loans", loanId);
@@ -27,7 +25,7 @@ function partyId(loan: Doc<"loans">, role: LoanRole): Id<"users"> {
 export async function requireLoanRole(
   ctx: MutationCtx,
   loanId: Id<"loans">,
-  { role, deniedReason }: { role: LoanRole; deniedReason: string },
+  { role, deniedReason }: RequireLoanRoleArgs,
 ): Promise<LoanAccess> {
   const user = await requireUser(ctx);
   const loan = await getLoanOrThrow(ctx, loanId);

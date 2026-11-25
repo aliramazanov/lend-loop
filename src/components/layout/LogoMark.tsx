@@ -1,4 +1,6 @@
-export function LogoMark({ className }: { className?: string }) {
+import type { LogoMarkProps } from "@/types";
+
+export function LogoMark({ className }: LogoMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden className={className}>
       <rect width="32" height="32" rx="9" className="fill-primary" />

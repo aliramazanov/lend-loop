@@ -5,9 +5,9 @@ import { QUERY_LIMITS } from "../lib/config";
 import { adminEmails } from "../lib/env";
 import { unauthorized } from "../lib/errors";
 import { normalizeText, stripHiddenCharacters } from "../lib/text";
-import { Role } from "../shared/catalog";
 import { PROFILE_POLICY } from "../shared/policy";
 import { recordAudit } from "./audit";
+import type { Role } from "../types";
 
 const FALLBACK_NAME = "Neighbor";
 

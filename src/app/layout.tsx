@@ -3,9 +3,9 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { SITE_NAME, TAGLINE } from "@/lib/site";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
+import type { RootLayoutProps } from "@/types";
 
 export const metadata: Metadata = {
   title: {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: TAGLINE,
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider appearance={{ options: { shimmer: false } }}>
       <html lang="en" className="motion-safe:scroll-smooth">

@@ -5,13 +5,9 @@ import {
   normalizeText,
 } from "../lib/text";
 import { LISTING_POLICY } from "../shared/policy";
+import type { ToolText } from "../types";
 
 const { nameLength, descriptionLength } = LISTING_POLICY;
-
-export interface ToolText {
-  name: string;
-  shortDescription: string;
-}
 
 export function validateToolInput(
   rawName: string,

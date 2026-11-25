@@ -1,15 +1,9 @@
 import { Calendar } from "@/components/ui/Calendar";
-import type { ToolDetailsView } from "@/lib/convexTypes";
 import { fromIsoDate, todayUtc } from "@/lib/dates";
 import { addDays, isSameDay } from "date-fns";
 import type { DateRange as PickedRange } from "react-day-picker";
 import { CALENDAR } from "@/lib/config";
-
-interface AvailabilityCalendarProps {
-  bookedRanges: ToolDetailsView["bookedRanges"];
-  selected?: PickedRange;
-  onSelect?: (range: PickedRange | undefined) => void;
-}
+import type { AvailabilityCalendarProps } from "@/types";
 
 function beyondLoanLimit(selected?: PickedRange) {
   const { from, to } = selected ?? {};
