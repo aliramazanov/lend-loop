@@ -69,7 +69,7 @@ describe("moderation guards", () => {
   });
 
   it("bans the account in Clerk on suspension and lifts the ban on reinstatement", async () => {
-    vi.stubEnv("CLERK_SECRET_KEY", "sk_test_e2e_placeholder");
+    vi.stubEnv("CLERK_SECRET_KEY", "clerk-secret-for-tests");
 
     const requests = stubFetch();
 

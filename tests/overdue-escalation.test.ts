@@ -40,9 +40,9 @@ describe("overdue escalation", () => {
   });
 
   it("escalates once to the admins and stops the borrower's reminders", async () => {
-    vi.stubEnv("RESEND_API_KEY", "re_test_placeholder");
+    vi.stubEnv("RESEND_API_KEY", "resend-key-for-tests");
     vi.stubEnv("EMAIL_FROM", "LendLoop <hello@lendloop.example>");
-    vi.stubEnv("CLERK_SECRET_KEY", "sk_test_placeholder");
+    vi.stubEnv("CLERK_SECRET_KEY", "clerk-secret-for-tests");
 
     const requests = stubFetch((request) => {
       if (!request.url.startsWith(CLERK_API_URL)) return Response.json({});

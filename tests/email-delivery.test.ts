@@ -25,9 +25,9 @@ const INTERNAL_ERROR = 500;
 const NOT_FOUND = 404;
 
 function configureEmail() {
-  vi.stubEnv("RESEND_API_KEY", "re_test_placeholder");
+  vi.stubEnv("RESEND_API_KEY", "resend-key-for-tests");
   vi.stubEnv("EMAIL_FROM", SENDER);
-  vi.stubEnv("CLERK_SECRET_KEY", "sk_test_placeholder");
+  vi.stubEnv("CLERK_SECRET_KEY", "clerk-secret-for-tests");
 }
 
 function clerkUser(request: Request) {
