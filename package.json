@@ -46,7 +46,7 @@
     "@vitest/coverage-istanbul": "^5.1.1",
     "convex-test": "^0.0.73",
     "oxlint": "^1.94.0",
-    "oxlint-tsgolint": "^7.0.2007",
+    "oxlint-tsgolint": "^7.0.2008",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.5",
