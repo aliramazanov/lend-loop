@@ -1,3 +1,11 @@
+/*
+ * Email sending, scheduled after loan changes and reminders.
+ *
+ * sendLoanEmail: sends one email through Resend and retries a few times before giving up.
+ * The outcome shows in the loan's activity log.
+ * recipientOf: the recipient's Clerk id, or nothing for a deleted account, which gets no email.
+ */
+
 import { v } from "convex/values";
 import { internalAction, internalQuery } from "./_generated/server";
 import * as EmailDelivery from "./model/emailDelivery";

@@ -1,23 +1,32 @@
+/*
+ * Listing changes.
+ *
+ * create, update: the owner only, within the rate limit. Creating also respects the
+ * per-owner listing cap.
+ * remove: the owner or an admin. Blocked while a loan is booked; pending requests are
+ * declined and the requesters told. The listing is hidden, not deleted.
+ * restore: brings a removed listing back, within the listing cap.
+ * generatePhotoUploadUrl: a one-time address for uploading a photo.
+ */
+
 import { ConvexError } from "convex/values";
 import { Doc, Id } from "../_generated/dataModel";
-import { MutationCtx } from "../_generated/server";
 import { forbidden, notFound } from "../lib/errors";
 import { enforceRateLimit } from "../lib/rateLimiter";
 import { recordAudit } from "./audit";
-import { requireUser } from "./auth";
 import { bookedLoansForTool, loansForTool } from "./loanStore";
 import { declineRequests } from "./loanTransitions";
 import { validateToolInput } from "./toolInput";
 import { assertValidPhotos, deleteDroppedPhotos } from "./toolPhotos";
 import { assertCanAddListing, getActiveToolOrThrow } from "./toolStore";
-import type { ToolFields } from "../types";
+import type { ToolFields, UserMutationCtx } from "../types";
 
 function canModerate(user: Doc<"users">, tool: Doc<"tools">): boolean {
   return user.role === "admin" || tool.ownerId === user._id;
 }
 
-export async function create(ctx: MutationCtx, fields: ToolFields) {
-  const user = await requireUser(ctx);
+export async function create(ctx: UserMutationCtx, fields: ToolFields) {
+  const { user } = ctx;
   const text = validateToolInput(fields.name, fields.shortDescription);
   const photoIds = fields.photoIds ?? [];
 
@@ -39,11 +48,11 @@ export async function create(ctx: MutationCtx, fields: ToolFields) {
 }
 
 export async function update(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   toolId: Id<"tools">,
   fields: ToolFields,
 ) {
-  const user = await requireUser(ctx);
+  const { user } = ctx;
   const tool = await getActiveToolOrThrow(ctx, toolId);
 
   if (tool.ownerId !== user._id) {
@@ -70,8 +79,8 @@ export async function update(
   });
 }
 
-export async function remove(ctx: MutationCtx, toolId: Id<"tools">) {
-  const user = await requireUser(ctx);
+export async function remove(ctx: UserMutationCtx, toolId: Id<"tools">) {
+  const { user } = ctx;
   const tool = await getActiveToolOrThrow(ctx, toolId);
   const isOwner = tool.ownerId === user._id;
 
@@ -106,8 +115,8 @@ export async function remove(ctx: MutationCtx, toolId: Id<"tools">) {
   });
 }
 
-export async function restore(ctx: MutationCtx, toolId: Id<"tools">) {
-  const user = await requireUser(ctx);
+export async function restore(ctx: UserMutationCtx, toolId: Id<"tools">) {
+  const { user } = ctx;
   const tool = await ctx.db.get("tools", toolId);
 
   if (!tool?.archivedAt) throw notFound("Removed listing");
@@ -141,8 +150,8 @@ export async function restore(ctx: MutationCtx, toolId: Id<"tools">) {
   });
 }
 
-export async function generatePhotoUploadUrl(ctx: MutationCtx) {
-  const user = await requireUser(ctx);
+export async function generatePhotoUploadUrl(ctx: UserMutationCtx) {
+  const { user } = ctx;
 
   await enforceRateLimit(ctx, "photoUpload", user._id);
 

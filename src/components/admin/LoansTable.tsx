@@ -1,5 +1,11 @@
 "use client";
 
+/*
+ * LoansTable: every loan for admins, with status, dates and the latest automation result.
+ * When an owner is suspended or deleted mid-loan, a button lets the admin confirm the
+ * return for them. Escalated loans are marked.
+ */
+
 import { ConfirmReturnDialog } from "@/components/loans/ConfirmReturnDialog";
 import { LoanStatusBadge } from "@/components/loans/LoanStatusBadge";
 import { Badge } from "@/components/ui/Badge";

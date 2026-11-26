@@ -1,3 +1,11 @@
+/*
+ * Moving a loan to a new status.
+ *
+ * transitionLoan: saves the new status and tells the other neighbor through n8n and email.
+ * Final states also clear any open extension request.
+ * declineRequests, declineCompetingRequests: close requests that can no longer happen.
+ */
+
 import { internal } from "../_generated/api";
 import { Doc } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";

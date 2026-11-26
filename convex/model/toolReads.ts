@@ -1,3 +1,8 @@
+/*
+ * Listing reads for each audience: visitors, signed-in neighbors, owners and admins.
+ * Removed listings appear only for their owner and for admins.
+ */
+
 import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";

@@ -1,3 +1,8 @@
+/*
+ * expireStaleLoans: closes requests nobody answered before their start date, and approved
+ * loans that were never picked up by their end date, then tells the borrower.
+ */
+
 import { MutationCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { isMissedPickup, isStaleRequest } from "./loanRules";

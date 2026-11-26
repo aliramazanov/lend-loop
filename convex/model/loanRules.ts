@@ -1,5 +1,17 @@
+/*
+ * Plain rules about a loan's state, shared by actions, lists and reminders.
+ * Examples: whether it has started, is overdue or escalated, was returned late, or can
+ * still be cancelled.
+ * assertValidLoanDates: checks a requested date range against the loan limits.
+ */
+
 import { ConvexError } from "convex/values";
-import { daysInclusive, isIsoDate, todayUtc } from "../lib/dates";
+import {
+  daysInclusive,
+  isIsoDate,
+  OPEN_ENDED_DATE,
+  todayUtc,
+} from "../lib/dates";
 import { LOAN_POLICY } from "../shared/policy";
 import type { DateRange, Loan, LoanStatus } from "../types";
 
@@ -25,6 +37,17 @@ export function isOverdue(loan: Loan, today: string): boolean {
 
 export function isEscalated(loan: Loan, today: string): boolean {
   return isOverdue(loan, today) && loan.escalatedAt !== undefined;
+}
+
+export function isStillOut(loan: Loan, today: string): boolean {
+  return loan.status === "active" && loan.endDate < today;
+}
+
+export function blockedRange(loan: Loan, today: string): DateRange {
+  return {
+    startDate: loan.startDate,
+    endDate: isStillOut(loan, today) ? OPEN_ENDED_DATE : loan.endDate,
+  };
 }
 
 const OPEN_STATUSES: LoanStatus[] = ["pending", "approved", "active"];

@@ -1,3 +1,12 @@
+/*
+ * What n8n reports back.
+ *
+ * recordAutomationEvent: stores each result once, using its key, updates the loan's
+ * latest summary and remembers when the last reminder went out.
+ * recordWorkflowError, listWorkflowFailures: failed n8n runs, shown on the admin
+ * Automation page.
+ */
+
 import { Doc } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";

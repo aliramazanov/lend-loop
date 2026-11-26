@@ -1,3 +1,12 @@
+/*
+ * signedEventRequest: the headers and body of a signed event, shared with the contract test.
+ * deliverLoanEvent: posts a signed loan event to the n8n request workflow.
+ *
+ * When n8n is not configured the event is skipped and logged. When n8n fails, delivery
+ * is retried with growing delays, and after the last attempt the failure is logged for
+ * admins. The payload carries display names, the tool and dates, never emails.
+ */
+
 import { v } from "convex/values";
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";
@@ -33,23 +42,33 @@ function failureSummary(event: LoanEventPayload, reason: string): string {
   return summary.slice(0, HTTP_LIMITS.automationSummaryLength);
 }
 
+export async function signedEventRequest(secret: string, payload: string) {
+  const timestamp = String(unixSeconds());
+  const signature = await signHmacSha256(secret, timestamp, payload);
+
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      [SIGNATURE_HEADERS.timestamp]: timestamp,
+      [SIGNATURE_HEADERS.signature]: formatSignature(signature),
+    },
+    body: JSON.stringify({ payload }),
+  };
+}
+
 async function postSignedEvent(
   target: WebhookTarget,
   event: LoanEventPayload,
 ): Promise<DeliveryResult> {
-  const payload = JSON.stringify(event);
-  const timestamp = String(unixSeconds());
-  const signature = await signHmacSha256(target.secret, timestamp, payload);
+  const request = await signedEventRequest(
+    target.secret,
+    JSON.stringify(event),
+  );
 
   try {
     const response = await fetch(target.url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        [SIGNATURE_HEADERS.timestamp]: timestamp,
-        [SIGNATURE_HEADERS.signature]: formatSignature(signature),
-      },
-      body: JSON.stringify({ payload }),
+      ...request,
       signal: AbortSignal.timeout(N8N_DELIVERY.timeoutMs),
     });
 

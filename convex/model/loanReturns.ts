@@ -1,3 +1,14 @@
+/*
+ * Ending a loan.
+ *
+ * claimReturn: the borrower says the tool is back. Reminders stop and lateness is counted
+ * from this moment, not from the owner's confirmation.
+ * recordReturn: closes the loan with its condition. Damage or a missing tool needs a note
+ * and goes to the audit log. A missing tool leaves the board and its bookings are released
+ * until the owner restores it.
+ * confirmReturn: the owner's way to close the loan.
+ */
+
 import { ConvexError } from "convex/values";
 import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
@@ -13,7 +24,11 @@ import {
   notifyLoanChange,
   transitionLoan,
 } from "./loanTransitions";
-import type { AuditReportedIssueArgs, ReturnReport } from "../types";
+import type {
+  AuditReportedIssueArgs,
+  ReturnReport,
+  UserMutationCtx,
+} from "../types";
 
 function cleanNote(note: string | undefined): string {
   const text = normalizeText(stripHiddenCharacters(note ?? ""));
@@ -60,7 +75,7 @@ async function withdrawMissingTool(ctx: MutationCtx, loan: Doc<"loans">) {
   }
 }
 
-export async function claimReturn(ctx: MutationCtx, loanId: Id<"loans">) {
+export async function claimReturn(ctx: UserMutationCtx, loanId: Id<"loans">) {
   const { user, loan } = await requireLoanRole(ctx, loanId, {
     role: "borrower",
     deniedReason: "Only the borrower can do this.",
@@ -122,7 +137,10 @@ export async function recordReturn(
   }
 }
 
-export async function confirmReturn(ctx: MutationCtx, report: ReturnReport) {
+export async function confirmReturn(
+  ctx: UserMutationCtx,
+  report: ReturnReport,
+) {
   const { user, loan } = await requireLoanRole(ctx, report.loanId, {
     role: "lender",
     deniedReason: "Only the tool owner can confirm a return.",

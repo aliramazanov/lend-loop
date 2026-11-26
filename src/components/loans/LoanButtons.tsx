@@ -1,3 +1,10 @@
+/*
+ * Buttons shared by the owner and the borrower.
+ *
+ * DecisionButtons: approve and decline, for a request or an extension.
+ * CancelLoanButton: cancels a request or an upcoming loan and tells the other neighbor.
+ */
+
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Check, X } from "lucide-react";

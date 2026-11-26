@@ -1,3 +1,11 @@
+/*
+ * usePhotoDrafts: the photo list behind the listing form.
+ *
+ * It holds photos already saved and newly picked ones. New photos are checked,
+ * compressed and previewed locally, and upload to Convex storage only when the form is
+ * saved. Local previews are released when no longer needed.
+ */
+
 import { compressImage } from "@/lib/compressImage";
 import { api } from "@convex/_generated/api";
 import { PHOTO_POLICY } from "@convex/shared/policy";

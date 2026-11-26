@@ -1,3 +1,9 @@
+/*
+ * AvailabilityCalendar: two months of availability for a tool.
+ * Past days and booked days are blocked, and once a start day is picked, days beyond
+ * the loan limit are blocked too.
+ */
+
 import { Calendar } from "@/components/ui/Calendar";
 import { fromIsoDate, todayUtc } from "@/lib/dates";
 import { addDays, isSameDay } from "date-fns";

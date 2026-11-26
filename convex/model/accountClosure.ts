@@ -1,3 +1,12 @@
+/*
+ * Cleanup when a neighbor is suspended or deletes their account.
+ *
+ * closeOpenLoans: requests and upcoming loans that were not handed over are declined or
+ * cancelled, and the other neighbor is told. Loans already in progress stay open.
+ * hideListings: takes the neighbor's listings off the board.
+ * anonymizeDeletedAccount: replaces the deleted neighbor's name and records it in the audit log.
+ */
+
 import { Doc, Id } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { recordAudit } from "./audit";

@@ -1,3 +1,9 @@
+/*
+ * Per-neighbor hourly limits on requests, listing changes, loan decisions, photo uploads
+ * and admin actions, using the official Convex rate limiter component.
+ * enforceRateLimit: rejects the call with a friendly message once a limit is reached.
+ */
+
 import {
   HOUR,
   RateLimiter,

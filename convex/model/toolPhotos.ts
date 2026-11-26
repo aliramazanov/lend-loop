@@ -1,3 +1,11 @@
+/*
+ * Listing photos kept in Convex storage.
+ *
+ * assertValidPhotos: only JPEG, PNG or WebP, within the size and count limits.
+ * photosWithUrls, photoUrls: viewable links for the app.
+ * deleteDroppedPhotos: removes files that an edit took off a listing.
+ */
+
 import { ConvexError } from "convex/values";
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { PHOTO_POLICY } from "../shared/policy";

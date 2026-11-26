@@ -1,3 +1,8 @@
+/*
+ * The signed-in area. Clerk sends signed-out visitors to sign in before anything renders,
+ * and the account gate then checks the neighbor's record.
+ */
+
 import { AccountGate } from "@/components/account/AccountGate";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { auth } from "@clerk/nextjs/server";

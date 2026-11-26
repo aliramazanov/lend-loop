@@ -1,3 +1,7 @@
+/*
+ * composeEmail: the subject and text for each loan event and reminder, in plain language.
+ */
+
 import type { Compose, EmailDetails, EmailKind, EmailMessage } from "../types";
 
 const SIGN_OFF = "Open LendLoop to see the details.\n\nThe LendLoop team";

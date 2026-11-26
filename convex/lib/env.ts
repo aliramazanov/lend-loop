@@ -1,3 +1,12 @@
+/*
+ * Environment reads in one place.
+ *
+ * Each reader returns nothing when a value is unset, and the callers then fail closed:
+ * unsigned webhooks are rejected, n8n notifications are skipped and logged, and emails
+ * are not sent.
+ * Secrets shorter than the minimum length are treated as unset.
+ */
+
 import { SIGNATURE_POLICY } from "./config";
 
 function readEnv(name: string): string | undefined {

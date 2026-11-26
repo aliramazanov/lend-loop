@@ -1,15 +1,15 @@
+/*
+ * verifySignedRequest: the gate in front of every n8n route.
+ * It rejects missing configuration, oversized bodies and bad or stale signatures before
+ * any payload is parsed.
+ */
+
 import { HTTP_LIMITS } from "../lib/config";
 import { n8nCallbackSecret } from "../lib/env";
-import { verifyHmacSha256 } from "../lib/hmac";
+import { canonicalRequest, verifyHmacSha256 } from "../lib/hmac";
 import { errorResponse, HTTP_STATUS } from "../lib/httpResponses";
 import { SIGNATURE_HEADERS } from "../lib/httpRoutes";
 import type { SignedRequest } from "../types";
-
-function signedPayload(request: Request, rawBody: string): string {
-  const { pathname } = new URL(request.url);
-
-  return request.method === "GET" ? `GET:${pathname}` : rawBody;
-}
 
 function reject(message: string, status: number): SignedRequest {
   return { ok: false, response: errorResponse(message, status) };
@@ -24,7 +24,7 @@ export async function verifySignedRequest(
   if (!secret) {
     console.error(`n8n_callback_misconfigured path=${pathname}`);
 
-    return reject("Server misconfigured", HTTP_STATUS.serverError);
+    return reject("Service unavailable", HTTP_STATUS.serviceUnavailable);
   }
 
   const rawBody = await request.text();
@@ -41,7 +41,7 @@ export async function verifySignedRequest(
     secret,
     timestamp: request.headers.get(SIGNATURE_HEADERS.timestamp),
     signature: request.headers.get(SIGNATURE_HEADERS.signature),
-    body: signedPayload(request, rawBody),
+    body: canonicalRequest(request.method, pathname, rawBody),
   });
 
   if (!verification.ok) {
@@ -49,7 +49,7 @@ export async function verifySignedRequest(
       `n8n_callback_rejected path=${pathname} reason="${verification.reason}"`,
     );
 
-    return reject("Invalid signature", HTTP_STATUS.unauthorized);
+    return reject("Unauthorized", HTTP_STATUS.unauthorized);
   }
 
   return { ok: true, rawBody };

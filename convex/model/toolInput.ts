@@ -1,3 +1,8 @@
+/*
+ * validateToolInput: length limits for the name and description, and a check that
+ * neither hides invisible or control characters.
+ */
+
 import { ConvexError } from "convex/values";
 import {
   containsHiddenCharacters,

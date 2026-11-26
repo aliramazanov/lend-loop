@@ -1,5 +1,10 @@
 "use client";
 
+/*
+ * ConvexClientProvider: connects Convex to Clerk, so every query and mutation runs as the
+ * signed-in neighbor.
+ */
+
 import { useAuth } from "@clerk/nextjs";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";

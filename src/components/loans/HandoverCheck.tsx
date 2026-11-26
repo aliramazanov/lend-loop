@@ -1,3 +1,10 @@
+/*
+ * The second half of the two-sided handover.
+ *
+ * needsHandoverCheck: whether this neighbor still has to agree to the other's confirmation.
+ * HandoverCheck: the buttons to agree, or to say the handover did not happen.
+ */
+
 import { ActionButton } from "@/components/shared/ActionButton";
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";

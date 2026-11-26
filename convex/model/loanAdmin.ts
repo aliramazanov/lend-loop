@@ -1,23 +1,29 @@
+/*
+ * Admin help when an owner cannot act.
+ *
+ * isUnavailable: whether an account is missing, suspended or deleted.
+ * confirmReturnForOwner: lets an admin close a loan whose owner is unavailable. It is
+ * refused while the owner can still act, and every use is written to the audit log.
+ */
+
 import { Doc } from "../_generated/dataModel";
-import { MutationCtx } from "../_generated/server";
 import { forbidden } from "../lib/errors";
 import { enforceRateLimit } from "../lib/rateLimiter";
 import { RETURN_CONDITION_LABELS } from "../shared/catalog";
 import { recordAudit } from "./audit";
-import { requireAdmin } from "./auth";
 import { assertLoanStatus, getLoanOrThrow } from "./loanAccess";
 import { recordReturn } from "./loanReturns";
-import type { ReturnReport } from "../types";
+import type { ReturnReport, UserMutationCtx } from "../types";
 
 export function isUnavailable(user: Doc<"users"> | null): boolean {
   return !user || Boolean(user.suspendedAt || user.deletedAt);
 }
 
 export async function confirmReturnForOwner(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   report: ReturnReport,
 ) {
-  const admin = await requireAdmin(ctx);
+  const { user: admin } = ctx;
   const loan = await getLoanOrThrow(ctx, report.loanId);
 
   assertLoanStatus(loan, "active");

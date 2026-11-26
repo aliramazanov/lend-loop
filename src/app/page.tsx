@@ -1,3 +1,7 @@
+/*
+ * The home page. Visitors see the public board; signed-in neighbors go straight to Browse.
+ */
+
 import { PublicBoard } from "@/components/public/PublicBoard";
 import { ROUTES } from "@/lib/routes";
 import { auth } from "@clerk/nextjs/server";

@@ -1,3 +1,8 @@
+/*
+ * Listing lookups: whether a listing is live, the board by category, an owner's
+ * listings, and the cap on how many active listings one owner can have.
+ */
+
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";

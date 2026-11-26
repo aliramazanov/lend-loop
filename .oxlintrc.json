@@ -8,6 +8,31 @@
   "rules": {
     "nextjs/no-img-element": "off",
     "typescript/no-deprecated": "error",
-    "curly": ["error", "multi-line"]
-  }
+    "curly": ["error", "multi-line"],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "./_generated/server",
+            "importNames": ["query", "mutation", "action"],
+            "message": "Build Convex functions with the access-level builders in convex/lib/functions."
+          },
+          {
+            "name": "../_generated/server",
+            "importNames": ["query", "mutation", "action"],
+            "message": "Build Convex functions with the access-level builders in convex/lib/functions."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["convex/lib/functions.ts"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
 }

@@ -1,10 +1,15 @@
+/*
+ * JSON responses for the HTTP routes, and safe parsing of request bodies.
+ * Field readers return nothing instead of throwing when a payload has the wrong shape.
+ */
+
 export const HTTP_STATUS = {
   ok: 200,
   badRequest: 400,
   unauthorized: 401,
   conflict: 409,
   payloadTooLarge: 413,
-  serverError: 500,
+  serviceUnavailable: 503,
 } as const;
 
 export function jsonResponse(data: unknown, status: number = HTTP_STATUS.ok) {

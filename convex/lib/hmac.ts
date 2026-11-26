@@ -1,3 +1,13 @@
+/*
+ * HMAC-SHA256 signing and checking for calls between Convex and n8n.
+ *
+ * signHmacSha256: signs the timestamp together with the body.
+ * canonicalRequest: the signed text for a call into Convex: method, path and body, so a
+ * signature made for one route is useless on any other.
+ * verifyHmacSha256: rejects a stale or future timestamp to stop replays, then compares the
+ * signatures in constant time so timing reveals nothing.
+ */
+
 import { SIGNATURE_POLICY } from "./config";
 import { unixSeconds } from "./dates";
 import type { SignedMessage, VerificationResult } from "../types";
@@ -26,6 +36,14 @@ function withoutPrefix(signature: string): string {
   return signature.startsWith(SIGNATURE_PREFIX)
     ? signature.slice(SIGNATURE_PREFIX.length)
     : signature;
+}
+
+export function canonicalRequest(
+  method: string,
+  path: string,
+  body: string,
+): string {
+  return `${method}:${path}:${body}`;
 }
 
 export function constantTimeEqual(first: string, second: string): boolean {

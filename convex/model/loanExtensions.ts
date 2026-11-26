@@ -1,3 +1,12 @@
+/*
+ * Asking for more days.
+ *
+ * requestExtension: the borrower asks for a later end date. The whole loan must stay
+ * within the 30-day limit, and only one request can be open at a time.
+ * respondToExtension: the owner approves or declines. Approval checks that the extra
+ * days are still free and declines other requests that now overlap.
+ */
+
 import { ConvexError } from "convex/values";
 import { Doc } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
@@ -6,7 +15,11 @@ import { requireLoanRole } from "./loanAccess";
 import { assertValidLoanDates, isOpen } from "./loanRules";
 import { assertDatesAreFree } from "./loanStore";
 import { declineCompetingRequests, notifyLoanChange } from "./loanTransitions";
-import type { ExtensionAnswer, ExtensionRequest } from "../types";
+import type {
+  ExtensionAnswer,
+  ExtensionRequest,
+  UserMutationCtx,
+} from "../types";
 
 function assertCanExtend(loan: Doc<"loans">, endDate: string) {
   if (loan.status !== "approved" && loan.status !== "active") {
@@ -67,7 +80,7 @@ async function approveExtension(
 }
 
 export async function requestExtension(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   { loanId, endDate }: ExtensionRequest,
 ) {
   const { user, loan } = await requireLoanRole(ctx, loanId, {
@@ -102,7 +115,7 @@ export async function requestExtension(
 }
 
 export async function respondToExtension(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   { loanId, approve }: ExtensionAnswer,
 ) {
   const { user, loan } = await requireLoanRole(ctx, loanId, {

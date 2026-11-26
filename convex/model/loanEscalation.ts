@@ -1,3 +1,9 @@
+/*
+ * escalateOverdueLoans: once a loan has been overdue for several days, it is flagged as
+ * escalated and every available admin gets an email. The borrower's daily reminders stop
+ * so an admin can follow up instead. An approved extension clears the flag.
+ */
+
 import { Doc } from "../_generated/dataModel";
 import { MutationCtx } from "../_generated/server";
 import { daysBetween, todayUtc } from "../lib/dates";

@@ -20,7 +20,7 @@
             {
               "id": "field-executionId",
               "name": "executionId",
-              "value": "={{ String($json.execution?.id ?? `${$json.workflow?.name}:${$now.toMillis()}`) }}",
+              "value": "={{ String($json.execution?.id ?? (($json.workflow?.name ?? 'workflow') + ':' + $now.toMillis())) }}",
               "type": "string"
             },
             {

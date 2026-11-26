@@ -1,6 +1,13 @@
+/*
+ * What each audience sees of a listing.
+ *
+ * Visitors get only the name and category. Signed-in neighbors also get photos,
+ * availability and the owner card. Owners also get the fields they can edit.
+ */
+
 import { QueryCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
-import { isOnLoanToday } from "./loanRules";
+import { blockedRange, isOnLoanToday } from "./loanRules";
 import { bookedLoansForTool, isToolOnLoan, loansAsLender } from "./loanStore";
 import { photoUrls, photosWithUrls } from "./toolPhotos";
 import { isArchived, isListed, listOwnedTools } from "./toolStore";
@@ -69,8 +76,8 @@ async function availability(ctx: QueryCtx, tool: Tool) {
   const booked = await bookedLoansForTool(ctx, tool._id);
 
   const bookedRanges = booked
-    .filter((loan) => loan.endDate >= today)
-    .map((loan) => ({ startDate: loan.startDate, endDate: loan.endDate }))
+    .map((loan) => blockedRange(loan, today))
+    .filter((range) => range.endDate >= today)
     .sort((first, second) => first.startDate.localeCompare(second.startDate));
 
   return {

@@ -1,3 +1,11 @@
+/*
+ * Who is calling.
+ *
+ * getAuthenticatedUser: the caller's record, or nothing when signed out.
+ * requireUser: the caller, rejecting signed-out, deleted and suspended accounts.
+ * requireAdmin: the same, and the caller must also be an admin.
+ */
+
 import { ConvexError } from "convex/values";
 import { Doc } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";

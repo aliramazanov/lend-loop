@@ -23,6 +23,17 @@
       ]
     },
     {
+      "parameters": {},
+      "id": "9ed9ba6d-225a-5ab1-8fd6-a740ba266116",
+      "name": "Run Now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        480
+      ]
+    },
+    {
       "parameters": {
         "workflowId": {
           "__rl": true,
@@ -233,6 +244,17 @@
         [
           {
             "node": "Record Reminder Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Now": {
+      "main": [
+        [
+          {
+            "node": "Fetch Loans Due Tomorrow",
             "type": "main",
             "index": 0
           }

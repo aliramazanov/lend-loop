@@ -1,3 +1,9 @@
+/*
+ * LenderActions: the owner's buttons on a loan card, which change with the loan's stage.
+ * Approve or decline a request or extension, confirm the handover, confirm the return
+ * or cancel an upcoming loan.
+ */
+
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { ActionButton } from "@/components/shared/ActionButton";

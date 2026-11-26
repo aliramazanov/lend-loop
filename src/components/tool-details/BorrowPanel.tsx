@@ -1,3 +1,8 @@
+/*
+ * BorrowPanel: date picking and the request button on a tool page.
+ * The button shows how many days are selected and is enabled only for a valid range.
+ */
+
 import { Button } from "@/components/ui/Button";
 import {
   daysInclusive,

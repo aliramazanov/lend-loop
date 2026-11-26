@@ -1,3 +1,11 @@
+/*
+ * Cleanup for text that neighbors type.
+ *
+ * normalizeText: normalizes Unicode so lookalike spellings match, and trims the ends.
+ * containsHiddenCharacters, stripHiddenCharacters: find or remove invisible and control
+ * characters that could disguise text, while keeping the joiner emoji sequences need.
+ */
+
 import type { LengthRange } from "../types";
 
 // ZWJ stays allowed so emoji sequences such as family or flag emoji survive.

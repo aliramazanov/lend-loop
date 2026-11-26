@@ -1,3 +1,8 @@
+/*
+ * scheduleLoanEmail: queues an email for one neighbor, which is sent only if the loan
+ * change that triggered it is saved.
+ */
+
 import { internal } from "../_generated/api";
 import { MutationCtx } from "../_generated/server";
 import type { ScheduleLoanEmailArgs } from "../types";

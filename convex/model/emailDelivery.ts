@@ -1,3 +1,11 @@
+/*
+ * deliverLoanEmail: sends one loan email.
+ *
+ * The address is fetched from Clerk at send time, used for this send only and never
+ * stored. A failed send is retried a few times; the result, sent or failed, goes to
+ * the loan's activity log. Neighbors without a Clerk account are skipped.
+ */
+
 import { v } from "convex/values";
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";

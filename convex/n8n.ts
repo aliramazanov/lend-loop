@@ -1,12 +1,24 @@
+/*
+ * Functions behind the n8n integration. All are internal, so the browser cannot call them,
+ * except listWorkflowFailuresForAdmin, which is admin only.
+ *
+ * deliverLoanEvent: sends a signed loan event to the n8n request workflow after every
+ * loan change, retrying with backoff when n8n is down.
+ * listOverdueLoans, listDueSoonLoans: the loans the daily reminder workflows ask for.
+ * recordOverdueReminder, recordDueSoonReminder, recordAutomationEvent: write-backs from
+ * n8n. Each is recorded once per key, so a workflow retry never doubles a reminder.
+ * recordWorkflowError: a failed n8n run, reported by the error workflow.
+ * listWorkflowFailuresForAdmin: recent failures for the admin Automation page.
+ */
+
 import { v } from "convex/values";
 import {
   internalAction,
   internalMutation,
   internalQuery,
-  query,
 } from "./_generated/server";
+import { adminQuery } from "./lib/functions";
 import { automationEventValidator } from "./lib/validators";
-import { requireAdmin } from "./model/auth";
 import * as Automation from "./model/automation";
 import * as LoanEventDelivery from "./model/loanEventDelivery";
 import * as Reminders from "./model/reminders";
@@ -68,12 +80,8 @@ export const recordWorkflowError = internalMutation({
     await Automation.recordWorkflowError(ctx, report),
 });
 
-export const listWorkflowFailuresForAdmin = query({
+export const listWorkflowFailuresForAdmin = adminQuery({
   args: {},
 
-  handler: async (ctx) => {
-    await requireAdmin(ctx);
-
-    return await Automation.listWorkflowFailures(ctx);
-  },
+  handler: async (ctx) => await Automation.listWorkflowFailures(ctx),
 });

@@ -1,5 +1,11 @@
 "use client";
 
+/*
+ * ToolForm: the form for adding or editing a listing.
+ * New photos upload first, then the listing saves with the full photo list. On success
+ * the owner goes back to My Listings.
+ */
+
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { usePhotoDrafts } from "@/hooks/usePhotoDrafts";

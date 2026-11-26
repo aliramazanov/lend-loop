@@ -1,3 +1,10 @@
+/*
+ * Daily background jobs.
+ *
+ * Expiry: requests nobody answered and approved loans never picked up are closed.
+ * Escalation: loans several days overdue are flagged to admins by email.
+ */
+
 import { cronJobs } from "convex/server";
 import { internal } from "./_generated/api";
 

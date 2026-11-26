@@ -1,3 +1,9 @@
+/*
+ * ConfirmReturnDialog: closes a loan with how the tool came back.
+ * Damage or a missing tool needs a short note. Admins use the same dialog for owners
+ * who are suspended or deleted.
+ */
+
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,

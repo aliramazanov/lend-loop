@@ -1,3 +1,9 @@
+/*
+ * Date helpers for loans.
+ * Today is always the UTC date, both here and in the calendar, so every neighbor sees
+ * the same booking days whatever their time zone.
+ */
+
 import {
   differenceInCalendarDays,
   getUnixTime,
@@ -8,6 +14,8 @@ import { millisecondsInDay } from "date-fns/constants";
 import type { DateRange } from "../types";
 
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+export const OPEN_ENDED_DATE = "9999-12-31";
 
 export function todayUtc(now = Date.now()): string {
   const [date] = new Date(now).toISOString().split("T");

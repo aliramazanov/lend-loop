@@ -1,3 +1,10 @@
+/*
+ * A photo carousel built on Embla, with keyboard support.
+ *
+ * Carousel, CarouselContent, CarouselItem, CarouselArrow: the building blocks.
+ * useCarousel: the current slide and scroll controls, used by the thumbnails.
+ */
+
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";

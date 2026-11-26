@@ -4,6 +4,10 @@ Neighbors list tools, request them for a date range, and n8n handles notificatio
 
 Next.js 16 (App Router) · TypeScript 7 · Clerk · Convex · n8n · Tailwind with shadcn/ui
 
+| Browse                              | Tool page                                  | Admin overview                                       |
+| ----------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
+| ![Browse](.github/assets/board.png) | ![Tool page](.github/assets/tool-page.png) | ![Admin overview](.github/assets/admin-overview.png) |
+
 ## Features
 
 - **Public board:** - Available tools with name and category only, and a sign-in button.
@@ -29,6 +33,24 @@ Next.js 16 (App Router) · TypeScript 7 · Clerk · Convex · n8n · Tailwind wi
 - Accounts deleted in Clerk are anonymised through a signed webhook. If an owner is suspended or deleted while their tool is out, an admin confirms the return.
 
 - **Email:** every loan event and reminder is emailed to the neighbor it concerns through Resend, with retries and idempotency keys. The address is looked up in Clerk at send time and never stored.
+
+## How n8n fits
+
+```mermaid
+sequenceDiagram
+    participant App as Next.js
+    participant C as Convex
+    participant N as n8n
+    App->>C: loan action (request, approve, return)
+    C->>N: signed loan event, retried with backoff
+    N-->>C: 200 only after the signature checks out
+    Note over N: daily at 08:00 and 09:00 UTC
+    N->>C: signed request for due and overdue loans
+    C-->>N: loans to remind
+    N->>C: signed write-back, stored once per reminder
+    C->>C: activity log, email through Resend
+    N->>C: error workflow reports failed runs
+```
 
 ## Run locally
 
@@ -63,21 +85,22 @@ Next.js 16 (App Router) · TypeScript 7 · Clerk · Convex · n8n · Tailwind wi
 1. Sign in with the email in `ADMIN_EMAILS`. You get the Admin area.
 2. In a private window, sign up as `someone+clerk_test@example.com` (Clerk dev instances accept the code `424242`) and request a tool.
 3. With n8n running, every step appears in the loan's activity log, and failures show under Admin, Automation.
+4. To see reminders without waiting a day, run `npm run demo:reminders`, then start the Overdue and Due Tomorrow workflows once from the n8n editor.
 
 ## Security
 
-| OWASP                  | Measure                                                                                                                          |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Broken access control  | Every Convex function checks the caller and the stored owner or role.                                                            |
-| Misconfiguration       | Security headers, no `X-Powered-By`, n8n bound to localhost.                                                                     |
-| Supply chain           | Lockfile with `npm ci`, CI actions pinned to SHAs, Dependabot, gitleaks.                                                         |
-| Cryptographic failures | HMAC-SHA256 with a separate secret per direction, constant-time comparison, a 5-minute replay window. Clerk webhooks use `svix`. |
-| Injection              | Typed Convex validators, no string-built queries, React escaping, hidden Unicode rejected in user text.                          |
-| Insecure design        | Booking rules, the official Convex rate limiter, a listing cap and bounded queries, all enforced on the server.                  |
-| Authentication         | Clerk. Admin requires a verified email and is re-checked at every sign-in.                                                       |
-| Integrity              | Payloads are parsed only after the signature checks out. Uploads accept only JPEG, PNG or WebP up to 5 MB.                       |
-| Logging                | Audit log for privileged actions. Rejected callbacks and rate-limit hits are logged without secrets.                             |
-| Exceptional conditions | Fail closed when misconfigured, 413 for oversized bodies, webhook retries with backoff, errors surfaced to admins.               |
+| OWASP                  | Measure                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Broken access control  | Every public Convex function declares public, user or admin access through one builder, and lint rejects any other way. Each also checks the stored owner or role. |
+| Misconfiguration       | Security headers, no `X-Powered-By`, n8n bound to localhost.                                                                                                       |
+| Supply chain           | Lockfile with `npm ci`, CI actions pinned to SHAs, Dependabot, gitleaks.                                                                                           |
+| Cryptographic failures | HMAC-SHA256 over method, path and body, with a separate secret per direction, constant-time comparison and a 5-minute replay window. Clerk webhooks use `svix`.    |
+| Injection              | Typed Convex validators, no string-built queries, React escaping, hidden Unicode rejected in user text.                                                            |
+| Insecure design        | Booking rules, the official Convex rate limiter, a listing cap and bounded queries, all enforced on the server.                                                    |
+| Authentication         | Clerk. Admin requires a verified email and is re-checked at every sign-in.                                                                                         |
+| Integrity              | Payloads are parsed only after the signature checks out. Uploads accept only JPEG, PNG or WebP up to 5 MB.                                                         |
+| Logging                | Audit log for privileged actions. Rejected callbacks and rate-limit hits are logged without secrets.                                                               |
+| Exceptional conditions | Fail closed when misconfigured, 413 for oversized bodies, webhook retries with backoff, errors surfaced to admins.                                                 |
 
 **Data minimisation:** the public board returns id, name and category only. Webhooks carry a display name, tool name, dates and status, never emails or Clerk IDs. Email addresses are never stored: Convex fetches the address from Clerk when it sends a message and passes it only to Resend.
 
@@ -90,6 +113,13 @@ npm run lint && npm run typecheck && npm test && npm run format:check
 npx playwright install chromium
 npm run e2e
 ```
+
+## Why it works this way
+
+- One UTC calendar for everyone, so booking days never shift between time zones. The cost is that a day turns over at midnight UTC.
+- Events to n8n are retried with backoff, and both sides drop duplicates by event id, so a retry never notifies twice.
+- Listings and accounts are hidden or anonymised, never erased, so loan history and the audit log stay complete.
+- Email is best effort: a failed send is retried and logged, but never blocks or undoes the loan change.
 
 ## Final Checklist
 

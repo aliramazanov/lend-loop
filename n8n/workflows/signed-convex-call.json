@@ -29,7 +29,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const crypto = require('crypto');\n\nconst MS_PER_SECOND = 1000;\nconst secret = $env.N8N_CALLBACK_SECRET;\nconst baseUrl = $env.CONVEX_SITE_URL;\n\nif (!secret || !baseUrl) {\n  throw new Error('N8N_CALLBACK_SECRET and CONVEX_SITE_URL must be set');\n}\n\nfunction sign(timestamp, payload) {\n  const digest = crypto\n    .createHmac('sha256', secret)\n    .update(`${timestamp}.${payload}`)\n    .digest('hex');\n\n  return `sha256=${digest}`;\n}\n\nreturn $input.all().map(({ json }) => {\n  const timestamp = String(Math.floor(Date.now() / MS_PER_SECOND));\n  const payload = json.method === 'GET' ? `GET:${json.path}` : json.body;\n\n  return {\n    json: {\n      ...json,\n      url: `${baseUrl}${json.path}`,\n      timestamp,\n      signature: sign(timestamp, payload),\n    },\n  };\n});\n"
+        "jsCode": "const crypto = require('crypto');\n\nconst MS_PER_SECOND = 1000;\nconst secret = $env.N8N_CALLBACK_SECRET;\nconst baseUrl = $env.CONVEX_SITE_URL;\n\nif (!secret || !baseUrl) {\n  throw new Error('N8N_CALLBACK_SECRET and CONVEX_SITE_URL must be set');\n}\n\nfunction sign(timestamp, payload) {\n  const digest = crypto\n    .createHmac('sha256', secret)\n    .update(`${timestamp}.${payload}`)\n    .digest('hex');\n\n  return `sha256=${digest}`;\n}\n\nreturn $input.all().map(({ json }) => {\n  const timestamp = String(Math.floor(Date.now() / MS_PER_SECOND));\n  const body = json.method === 'GET' ? '' : json.body;\n  const payload = `${json.method}:${json.path}:${body}`;\n\n  return {\n    json: {\n      ...json,\n      url: `${baseUrl}${json.path}`,\n      timestamp,\n      signature: sign(timestamp, payload),\n    },\n  };\n});\n"
       },
       "id": "call-sign",
       "name": "Sign Request",
@@ -99,7 +99,10 @@
       "position": [
         880,
         200
-      ]
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -131,7 +134,10 @@
       "position": [
         880,
         400
-      ]
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
     }
   ],
   "connections": {

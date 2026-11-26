@@ -1,3 +1,8 @@
+/*
+ * buildOverview: the numbers and charts on the admin overview page, such as active loans,
+ * overdue and escalated loans, reported problems, failed automations and requests per day.
+ */
+
 import { Doc } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";

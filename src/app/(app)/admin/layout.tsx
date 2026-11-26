@@ -1,3 +1,8 @@
+/*
+ * The admin area. The server checks the role first, and anyone who is not an admin gets
+ * a not-found page before any admin data loads.
+ */
+
 import { AdminNav } from "@/components/admin/AdminNav";
 import { auth } from "@clerk/nextjs/server";
 import { api } from "@convex/_generated/api";

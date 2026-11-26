@@ -1,3 +1,8 @@
+/*
+ * Date helpers for the interface.
+ * Today is the UTC date, matching the server, so the calendar and the booking rules agree.
+ */
+
 import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 
 const ISO_DATE = "yyyy-MM-dd";

@@ -1,3 +1,9 @@
+/*
+ * LoanNotices: short status lines on a loan card, worded for the owner or the borrower.
+ * Covers pending extensions, returns waiting for confirmation, handovers and escalation.
+ * Owners also see the requester's history on new requests.
+ */
+
 import { formatDay } from "@/lib/dates";
 import { BorrowerHistory } from "./BorrowerHistory";
 import { needsHandoverCheck } from "./HandoverCheck";

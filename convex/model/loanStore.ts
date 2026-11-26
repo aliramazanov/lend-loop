@@ -1,8 +1,15 @@
+/*
+ * Loan queries by tool, status, borrower and owner, and the booking checks built on them.
+ *
+ * assertDatesAreFree: rejects dates that overlap an upcoming or active loan.
+ * assertNoDuplicateRequest: stops a borrower from asking twice for overlapping dates.
+ */
+
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
-import { datesOverlap } from "../lib/dates";
-import { isOnLoanToday } from "./loanRules";
+import { datesOverlap, todayUtc } from "../lib/dates";
+import { blockedRange, isOnLoanToday, isStillOut } from "./loanRules";
 import type {
   AssertDatesAreFreeArgs,
   AssertNoDuplicateRequestArgs,
@@ -64,11 +71,20 @@ export async function assertDatesAreFree(
   ctx: QueryCtx,
   { toolId, range, ignoredLoanId }: AssertDatesAreFreeArgs,
 ) {
+  const today = todayUtc();
   const booked = await bookedLoansForTool(ctx, toolId);
 
-  const conflict = booked.some(
-    (loan) => loan._id !== ignoredLoanId && datesOverlap(loan, range),
+  const conflict = booked.find(
+    (loan) =>
+      loan._id !== ignoredLoanId &&
+      datesOverlap(blockedRange(loan, today), range),
   );
+
+  if (conflict && isStillOut(conflict, today)) {
+    throw new ConvexError(
+      "This tool is still out past its return date, so it can't be booked until it's back.",
+    );
+  }
 
   if (conflict) {
     throw new ConvexError("An approved loan overlaps these dates.");

@@ -1,3 +1,8 @@
+/*
+ * RequestExtensionDialog: the borrower picks a new end date.
+ * Only dates that keep the whole loan within its limit can be chosen.
+ */
+
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,

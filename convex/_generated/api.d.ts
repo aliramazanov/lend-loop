@@ -18,6 +18,7 @@ import type * as lib_dates from "../lib/dates.js";
 import type * as lib_env from "../lib/env.js";
 import type * as lib_errors from "../lib/errors.js";
 import type * as lib_events from "../lib/events.js";
+import type * as lib_functions from "../lib/functions.js";
 import type * as lib_hmac from "../lib/hmac.js";
 import type * as lib_httpResponses from "../lib/httpResponses.js";
 import type * as lib_httpRoutes from "../lib/httpRoutes.js";
@@ -95,6 +96,7 @@ declare const fullApi: ApiFromModules<{
   "lib/env": typeof lib_env;
   "lib/errors": typeof lib_errors;
   "lib/events": typeof lib_events;
+  "lib/functions": typeof lib_functions;
   "lib/hmac": typeof lib_hmac;
   "lib/httpResponses": typeof lib_httpResponses;
   "lib/httpRoutes": typeof lib_httpRoutes;

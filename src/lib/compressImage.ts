@@ -1,3 +1,8 @@
+/*
+ * compressImage: scales a photo down and converts it to WebP before upload, so listings
+ * load fast and stay within the size limit.
+ */
+
 import { PHOTO_COMPRESSION } from "./config";
 
 const { maxDimensionPx, webpQuality, outputType } = PHOTO_COMPRESSION;

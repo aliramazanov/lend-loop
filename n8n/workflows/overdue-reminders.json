@@ -23,6 +23,17 @@
       ]
     },
     {
+      "parameters": {},
+      "id": "8dea961e-e731-54f1-932e-5a066b451d83",
+      "name": "Run Now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        480
+      ]
+    },
+    {
       "parameters": {
         "workflowId": {
           "__rl": true,
@@ -233,6 +244,17 @@
         [
           {
             "node": "Record Reminder Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Now": {
+      "main": [
+        [
+          {
+            "node": "Fetch Overdue Loans",
             "type": "main",
             "index": 0
           }

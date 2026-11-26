@@ -1,3 +1,11 @@
+/*
+ * HTTP routes for outside services.
+ *
+ * The n8n routes accept a request only when its HMAC signature and timestamp check out,
+ * using a secret that differs from the one Convex signs outgoing events with.
+ * The Clerk route accepts only events with a valid Svix signature.
+ */
+
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { HTTP_ROUTES } from "./lib/httpRoutes";

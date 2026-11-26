@@ -3,7 +3,11 @@ import { describe, expect, it, vi } from "vitest";
 import { api, internal } from "../convex/_generated/api";
 import { HTTP_LIMITS } from "../convex/lib/config";
 import { unixSeconds } from "../convex/lib/dates";
-import { formatSignature, signHmacSha256 } from "../convex/lib/hmac";
+import {
+  canonicalRequest,
+  formatSignature,
+  signHmacSha256,
+} from "../convex/lib/hmac";
 import { HTTP_ROUTES, SIGNATURE_HEADERS } from "../convex/lib/httpRoutes";
 import {
   createBackend,
@@ -17,9 +21,10 @@ useFrozenClock();
 
 const CALLBACK_SECRET = "c".repeat(64);
 
-async function signedHeaders(body: string) {
+async function signedHeaders(method: string, path: string, body = "") {
   const timestamp = String(unixSeconds());
-  const signature = await signHmacSha256(CALLBACK_SECRET, timestamp, body);
+  const message = canonicalRequest(method, path, body);
+  const signature = await signHmacSha256(CALLBACK_SECRET, timestamp, message);
 
   return {
     [SIGNATURE_HEADERS.timestamp]: timestamp,
@@ -82,8 +87,8 @@ describe("n8n write-backs", () => {
 
     const t = createBackend();
     const body = JSON.stringify({ executionId: "exec-1", summary: "boom" });
-    const headers = await signedHeaders(body);
     const errorEndpoint = HTTP_ROUTES.automationError;
+    const headers = await signedHeaders("POST", errorEndpoint, body);
 
     const unsigned = await t.fetch(errorEndpoint, { method: "POST", body });
 
@@ -98,9 +103,19 @@ describe("n8n write-backs", () => {
       headers,
     });
 
+    const replayedToAnotherPost = await t.fetch(
+      HTTP_ROUTES.dueSoonReminderSent,
+      {
+        method: "POST",
+        headers,
+        body,
+      },
+    );
+
     expect(unsigned.status).toBe(401);
     expect(oversized.status).toBe(413);
     expect(replayedElsewhere.status).toBe(401);
+    expect(replayedToAnotherPost.status).toBe(401);
 
     const signedRequest = { method: "POST", headers, body };
     const first = await t.fetch(errorEndpoint, signedRequest);
@@ -114,7 +129,7 @@ describe("n8n write-backs", () => {
     vi.stubEnv("N8N_CALLBACK_SECRET", CALLBACK_SECRET);
 
     const t = createBackend();
-    const headers = await signedHeaders(`GET:${HTTP_ROUTES.overdueLoans}`);
+    const headers = await signedHeaders("GET", HTTP_ROUTES.overdueLoans);
 
     const response = await t.fetch(HTTP_ROUTES.overdueLoans, {
       method: "GET",
@@ -137,7 +152,7 @@ describe("n8n write-backs", () => {
 
     const listing = await t.fetch(HTTP_ROUTES.dueSoonLoans, {
       method: "GET",
-      headers: await signedHeaders(`GET:${HTTP_ROUTES.dueSoonLoans}`),
+      headers: await signedHeaders("GET", HTTP_ROUTES.dueSoonLoans),
     });
 
     expect(await listing.json()).toMatchObject({
@@ -150,7 +165,7 @@ describe("n8n write-backs", () => {
 
       return await t.fetch(path, {
         method: "POST",
-        headers: await signedHeaders(body),
+        headers: await signedHeaders("POST", path, body),
         body,
       });
     };

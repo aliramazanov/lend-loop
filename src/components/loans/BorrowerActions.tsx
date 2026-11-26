@@ -1,3 +1,8 @@
+/*
+ * BorrowerActions: the borrower's buttons on a loan card, which change with the loan's
+ * stage. Confirm the pickup, mark the tool returned, ask for more days or cancel.
+ */
+
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { ActionButton } from "@/components/shared/ActionButton";

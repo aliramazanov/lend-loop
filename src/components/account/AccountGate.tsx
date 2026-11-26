@@ -1,5 +1,12 @@
 "use client";
 
+/*
+ * AccountGate: wraps the signed-in area.
+ *
+ * It makes sure the neighbor's record exists, then shows the app. A suspended neighbor
+ * sees a notice instead, and someone whose session ended is offered a way back to sign in.
+ */
+
 import { LoadingState } from "@/components/shared/LoadingState";
 import { useUserSync } from "@/hooks/useUserSync";
 import { api } from "@convex/_generated/api";

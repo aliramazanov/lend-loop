@@ -1,3 +1,12 @@
+/*
+ * Reminders that n8n sends on a daily schedule.
+ *
+ * listOverdue, listDueSoon: loans to remind about today. Loans already returned by the
+ * borrower, escalated to admins or reminded today are left out.
+ * recordOverdueReminder, recordDueSoonReminder: write-backs from n8n. Each reminder is
+ * stored once, so a retry never repeats it, and queues the reminder email.
+ */
+
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { idempotencyKeys } from "../lib/events";

@@ -1,3 +1,7 @@
+/*
+ * useUserSync: creates or refreshes the neighbor's record once after each sign-in.
+ */
+
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useEffect, useRef } from "react";

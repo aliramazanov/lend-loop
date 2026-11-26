@@ -1,3 +1,8 @@
+/*
+ * Loan lists for the borrower, the owner and admins, ready for display.
+ * Owners also get each requester's history so they can decide on a request.
+ */
+
 import { Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";

@@ -23,10 +23,10 @@ export const CHARTS = {
   fontSize: 12,
   barRadius: 4,
   column: {
-    margin: { top: 4, right: 4, left: -24, bottom: 0 },
+    margin: { top: 4, right: 4, left: 0, bottom: 0 },
     tickMargin: 6,
     minTickGap: 24,
-    yAxisWidth: 40,
+    yAxisWidth: 32,
     maxBarSize: 20,
   },
   ranked: {

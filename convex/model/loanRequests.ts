@@ -1,10 +1,18 @@
+/*
+ * The request stage.
+ *
+ * requestBorrow: checks the dates, that the tool is not the borrower's own, that the days
+ * are free and that the borrower has no overlapping request, then opens a request.
+ * approve: books the dates and declines other requests that overlap them.
+ * decline: the owner turns a request down.
+ * cancel: either neighbor can cancel until the tool has been handed over.
+ */
+
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
-import { MutationCtx } from "../_generated/server";
 import { todayUtc } from "../lib/dates";
 import { forbidden } from "../lib/errors";
 import { enforceRateLimit } from "../lib/rateLimiter";
-import { requireUser } from "./auth";
 import {
   assertLoanStatus,
   requireLoanParty,
@@ -18,13 +26,13 @@ import {
   transitionLoan,
 } from "./loanTransitions";
 import { getActiveToolOrThrow } from "./toolStore";
-import type { BorrowRequest } from "../types";
+import type { BorrowRequest, UserMutationCtx } from "../types";
 
 export async function requestBorrow(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   { toolId, startDate, endDate }: BorrowRequest,
 ) {
-  const user = await requireUser(ctx);
+  const { user } = ctx;
   const range = { startDate, endDate };
 
   assertValidLoanDates(range, todayUtc());
@@ -64,7 +72,7 @@ export async function requestBorrow(
   return loanId;
 }
 
-export async function approve(ctx: MutationCtx, loanId: Id<"loans">) {
+export async function approve(ctx: UserMutationCtx, loanId: Id<"loans">) {
   const { user, loan } = await requireLoanRole(ctx, loanId, {
     role: "lender",
     deniedReason: "Only the tool owner can approve requests.",
@@ -99,7 +107,7 @@ export async function approve(ctx: MutationCtx, loanId: Id<"loans">) {
   return { autoDeclined };
 }
 
-export async function decline(ctx: MutationCtx, loanId: Id<"loans">) {
+export async function decline(ctx: UserMutationCtx, loanId: Id<"loans">) {
   const { user, loan } = await requireLoanRole(ctx, loanId, {
     role: "lender",
     deniedReason: "Only the tool owner can decline requests.",
@@ -116,7 +124,7 @@ export async function decline(ctx: MutationCtx, loanId: Id<"loans">) {
   });
 }
 
-export async function cancel(ctx: MutationCtx, loanId: Id<"loans">) {
+export async function cancel(ctx: UserMutationCtx, loanId: Id<"loans">) {
   const { user, loan, isBorrower } = await requireLoanParty(ctx, loanId);
 
   if (loan.status === "pending" && !isBorrower) {

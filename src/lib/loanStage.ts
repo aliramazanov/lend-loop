@@ -1,3 +1,12 @@
+/*
+ * How a loan's state is shown.
+ *
+ * loanStage: the label and color, including derived stages such as overdue, awaiting
+ * handover and returned damaged.
+ * statusLabel: the plain name of a status, used by the admin charts.
+ * reminderNote: when the last reminder went out.
+ */
+
 import { daysSince } from "./dates";
 import type { LoanStage, StageInput } from "@/types";
 import type { LoanStatus } from "@convex/types";

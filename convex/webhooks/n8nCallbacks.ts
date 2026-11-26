@@ -1,3 +1,12 @@
+/*
+ * HTTP handlers that n8n calls during its workflows. Each runs only after
+ * verifySignedRequest has accepted the request.
+ *
+ * listOverdueLoans, listDueSoonLoans: the loans to remind about.
+ * recordOverdueReminder, recordDueSoonReminder: confirm a reminder went out.
+ * recordWorkflowError: report a failed n8n run for the admin Automation page.
+ */
+
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";
 import { HTTP_LIMITS } from "../lib/config";

@@ -1,3 +1,9 @@
+/*
+ * handleClerkWebhook: receives account events from Clerk.
+ * The Svix signature is checked first; a deleted account is then anonymized.
+ * Other event types are acknowledged and ignored.
+ */
+
 import { Webhook, WebhookVerificationError } from "svix";
 import { internal } from "../_generated/api";
 import { ActionCtx } from "../_generated/server";
@@ -46,7 +52,7 @@ export async function handleClerkWebhook(ctx: ActionCtx, request: Request) {
   if (!secret) {
     console.error("clerk_webhook_misconfigured");
 
-    return errorResponse("Server misconfigured", HTTP_STATUS.serverError);
+    return errorResponse("Service unavailable", HTTP_STATUS.serviceUnavailable);
   }
 
   const rawBody = await request.text();
@@ -58,7 +64,7 @@ export async function handleClerkWebhook(ctx: ActionCtx, request: Request) {
   if (!isSignedByClerk(secret, rawBody, request)) {
     console.warn("clerk_webhook_rejected reason=signature");
 
-    return errorResponse("Invalid signature", HTTP_STATUS.unauthorized);
+    return errorResponse("Unauthorized", HTTP_STATUS.unauthorized);
   }
 
   const clerkId = deletedUserId(rawBody);

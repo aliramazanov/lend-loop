@@ -1,18 +1,36 @@
+/*
+ * Account API used by the app and by the Clerk webhook.
+ *
+ * syncCurrentUser, getCurrentUser: keep the neighbor's record in step with their Clerk
+ * profile and return it, including role, trust label and suspension.
+ * listUsersForAdmin, listAuditLogForAdmin: the admin Neighbors and Audit log pages.
+ * setTrustedLender, suspend, reinstate: admin moderation. Each change is written to the
+ * audit log, and suspension also signs the neighbor out through Clerk.
+ * anonymizeDeletedAccount: run when Clerk reports a deleted account. Their name is
+ * replaced, their listings are hidden and their unstarted loans are closed.
+ */
+
 import { v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
+import {
+  adminMutation,
+  adminQuery,
+  publicQuery,
+  signedInMutation,
+} from "./lib/functions";
 import * as AccountClosure from "./model/accountClosure";
 import { listRecentAuditEvents } from "./model/audit";
-import { getAuthenticatedUser, requireAdmin } from "./model/auth";
+import { getAuthenticatedUser } from "./model/auth";
 import * as Moderation from "./model/moderation";
 import * as Users from "./model/users";
 
-export const syncCurrentUser = mutation({
+export const syncCurrentUser = signedInMutation({
   args: {},
 
   handler: async (ctx) => await Users.syncCurrentUser(ctx),
 });
 
-export const getCurrentUser = query({
+export const getCurrentUser = publicQuery({
   args: {},
 
   handler: async (ctx) => {
@@ -22,39 +40,31 @@ export const getCurrentUser = query({
   },
 });
 
-export const listUsersForAdmin = query({
+export const listUsersForAdmin = adminQuery({
   args: {},
 
-  handler: async (ctx) => {
-    await requireAdmin(ctx);
-
-    return await Users.listForAdmin(ctx);
-  },
+  handler: async (ctx) => await Users.listForAdmin(ctx),
 });
 
-export const listAuditLogForAdmin = query({
+export const listAuditLogForAdmin = adminQuery({
   args: {},
 
-  handler: async (ctx) => {
-    await requireAdmin(ctx);
-
-    return await listRecentAuditEvents(ctx);
-  },
+  handler: async (ctx) => await listRecentAuditEvents(ctx),
 });
 
-export const setTrustedLender = mutation({
+export const setTrustedLender = adminMutation({
   args: { userId: v.id("users"), trustedLender: v.boolean() },
 
   handler: async (ctx, args) => await Moderation.setTrustedLender(ctx, args),
 });
 
-export const suspend = mutation({
+export const suspend = adminMutation({
   args: { userId: v.id("users"), reason: v.string() },
 
   handler: async (ctx, args) => await Moderation.suspend(ctx, args),
 });
 
-export const reinstate = mutation({
+export const reinstate = adminMutation({
   args: { userId: v.id("users") },
 
   handler: async (ctx, { userId }) => await Moderation.reinstate(ctx, userId),

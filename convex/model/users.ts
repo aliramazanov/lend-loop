@@ -1,3 +1,11 @@
+/*
+ * Neighbor records.
+ *
+ * syncCurrentUser: creates or updates the neighbor from their Clerk profile. Admin is
+ * granted to listed emails only when the email is verified, and checked at every sign-in.
+ * toCurrentUser, listForAdmin: what the app and the admin Neighbors page show.
+ */
+
 import { UserIdentity } from "convex/server";
 import { Doc } from "../_generated/dataModel";
 import { MutationCtx, QueryCtx } from "../_generated/server";

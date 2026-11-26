@@ -1,3 +1,11 @@
+/*
+ * What loan cards and tables show.
+ *
+ * toLoanViews: tool and neighbor names, status flags and the recent activity log.
+ * borrowerHistory, withBorrowerHistories: a requester's record (completed loans, late
+ * returns and reported problems) shown to the owner before they approve.
+ */
+
 import { Doc, Id } from "../_generated/dataModel";
 import { QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";

@@ -1,3 +1,8 @@
+/*
+ * PhotoPicker: the photo row on the listing form.
+ * Shows the chosen photos with remove buttons, and an add tile while there is room.
+ */
+
 import { PhotoCarousel } from "@/components/tools/PhotoCarousel";
 import { Hint, labelClasses } from "@/components/ui/Field";
 import { cn } from "@/lib/utils";

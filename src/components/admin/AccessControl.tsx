@@ -1,3 +1,8 @@
+/*
+ * AccessControl: the suspend or reinstate button for one neighbor.
+ * Suspension asks for a reason, which goes to the audit log. Admins have no button.
+ */
+
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
 import { Label, Textarea } from "@/components/ui/Field";

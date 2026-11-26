@@ -1,3 +1,8 @@
+/*
+ * ConfirmDialog: a confirmation step before destructive or important actions.
+ * Confirming runs the action and reports the result as a toast.
+ */
+
 import {
   AlertDialog,
   AlertDialogAction,

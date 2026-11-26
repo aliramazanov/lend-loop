@@ -1,3 +1,11 @@
+/*
+ * Event names used across the backend, and the ids built from them.
+ *
+ * Loan events drive notifications; automation events fill the activity log; audit actions
+ * fill the audit log; email kinds pick the message text.
+ * idempotencyKeys: one key per write-back, so a retried call is stored only once.
+ */
+
 import type { LoanEvent } from "../types";
 
 export const LOAN_EVENTS = [

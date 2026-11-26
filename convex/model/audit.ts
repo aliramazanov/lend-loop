@@ -1,3 +1,10 @@
+/*
+ * The audit log of privileged and sensitive actions.
+ *
+ * recordAudit: writes one entry with who acted, the action, what it concerned and details.
+ * listRecentAuditEvents: recent entries with the names of the actor and the target filled in.
+ */
+
 import { MutationCtx, QueryCtx } from "../_generated/server";
 import { QUERY_LIMITS } from "../lib/config";
 import type { AuditEntry, AuditEvent } from "../types";

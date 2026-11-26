@@ -1,3 +1,8 @@
+/*
+ * setBanned: bans or unbans a neighbor in Clerk when an admin suspends or reinstates them.
+ * A ban ends their sessions, so a suspended neighbor is signed out everywhere.
+ */
+
 import { v } from "convex/values";
 import { internalAction } from "./_generated/server";
 import { CLERK_API_URL } from "./lib/config";

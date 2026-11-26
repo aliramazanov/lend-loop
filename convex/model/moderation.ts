@@ -1,3 +1,12 @@
+/*
+ * Admin moderation. Every action is rate limited and written to the audit log.
+ *
+ * setTrustedLender: grants or removes the trusted lender label.
+ * suspend: needs a reason. It closes the neighbor's unstarted loans, hides their
+ * listings and bans them in Clerk. Admins cannot suspend themselves or each other.
+ * reinstate: lifts the suspension and the Clerk ban.
+ */
+
 import { ConvexError } from "convex/values";
 import { internal } from "../_generated/api";
 import { Doc, Id } from "../_generated/dataModel";
@@ -12,13 +21,19 @@ import {
 import { MODERATION_POLICY } from "../shared/policy";
 import { closeOpenLoans, hideListings } from "./accountClosure";
 import { recordAudit } from "./audit";
-import { requireAdmin } from "./auth";
-import type { SetTrustedLenderArgs, SuspendArgs } from "../types";
+import type {
+  SetTrustedLenderArgs,
+  SuspendArgs,
+  UserMutationCtx,
+} from "../types";
 
 const { suspensionReasonLength } = MODERATION_POLICY;
 
-async function requireModerationTarget(ctx: MutationCtx, userId: Id<"users">) {
-  const admin = await requireAdmin(ctx);
+async function requireModerationTarget(
+  ctx: UserMutationCtx,
+  userId: Id<"users">,
+) {
+  const { user: admin } = ctx;
 
   await enforceRateLimit(ctx, "adminAction", admin._id);
 
@@ -73,7 +88,7 @@ async function scheduleClerkBan(
 }
 
 export async function setTrustedLender(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   { userId, trustedLender }: SetTrustedLenderArgs,
 ) {
   const { admin, target } = await requireModerationTarget(ctx, userId);
@@ -94,7 +109,7 @@ export async function setTrustedLender(
 }
 
 export async function suspend(
-  ctx: MutationCtx,
+  ctx: UserMutationCtx,
   { userId, reason: rawReason }: SuspendArgs,
 ) {
   const { admin, target } = await requireModerationTarget(ctx, userId);
@@ -125,7 +140,7 @@ export async function suspend(
   return { hiddenListings, closedLoans };
 }
 
-export async function reinstate(ctx: MutationCtx, userId: Id<"users">) {
+export async function reinstate(ctx: UserMutationCtx, userId: Id<"users">) {
   const { admin, target } = await requireModerationTarget(ctx, userId);
 
   if (!target.suspendedAt) {
